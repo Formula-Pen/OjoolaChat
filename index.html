@@ -29,6 +29,7 @@ button.sec{background:#eef2ff;color:#2563eb;margin-top:10px}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
 .top button{width:auto;padding:8px 14px;background:#fee2e2;color:#991b1b;font-size:13px}
 .badge{text-align:center;background:#dcfce7;color:#166534;padding:8px;border-radius:10px;font-size:13px;margin-bottom:14px}
+.hint{font-size:12px;color:#666;margin:-6px 0 12px}
 </style>
 </head>
 <body>
@@ -42,7 +43,8 @@ button.sec{background:#eef2ff;color:#2563eb;margin-top:10px}
 <p class="muted" id="authSub">Login with your email to continue.</p>
 <input id="nameInput" placeholder="Your Name (for Sign Up only)" style="display:none">
 <input id="emailInput" type="email" placeholder="Email address">
-<input id="passInput" type="password" placeholder="Password (min 6 characters)">
+<input id="passInput" type="password" placeholder="Password (min 8: letter + number + symbol)">
+<div class="hint" id="passHint">Password must be at least 8 characters with letter, number & symbol. e.g. Ojoola@123</div>
 <button id="mainBtn">Login</button>
 <button class="sec" id="toggleBtn">Don't have account? Create Account</button>
 <div id="msg"></div>
@@ -82,6 +84,14 @@ const authCard = document.getElementById('authCard');
 const chatCard = document.getElementById('chatCard');
 const msg = document.getElementById('msg');
 
+function isStrongPassword(pass){
+  if(pass.length < 8) return false;
+  const hasLetter = /[A-Za-z]/.test(pass);
+  const hasNumber = /[0-9]/.test(pass);
+  const hasSymbol = /[^A-Za-z0-9]/.test(pass);
+  return hasLetter && hasNumber && hasSymbol;
+}
+
 document.getElementById('toggleBtn').onclick = () => {
   isSignup = !isSignup;
   document.getElementById('authTitle').textContent = isSignup ? 'Create Account' : 'Welcome back';
@@ -97,7 +107,11 @@ document.getElementById('mainBtn').onclick = async () => {
   const email = document.getElementById('emailInput').value.trim();
   const pass = document.getElementById('passInput').value;
   if(!email || !pass){ msg.textContent='Please enter email and password.'; return; }
-  if(pass.length < 6){ msg.textContent='Password must be at least 6 characters.'; return; }
+  // Strong password check - only for Sign Up, so old users can still login
+  if(isSignup && !isStrongPassword(pass)){
+    msg.textContent='Password must be at least 8 characters with a letter, a number and a symbol. e.g. Ojoola@123';
+    return;
+  }
   msg.textContent='Please wait...';
   try{
     if(isSignup){
@@ -152,4 +166,4 @@ document.getElementById('sendBtn').onclick = send;
 document.getElementById('textInput').addEventListener('keydown', e=>{ if(e.key==='Enter') send(); });
 </script>
 </body>
-</html>
+  </html>
