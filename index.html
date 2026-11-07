@@ -6,51 +6,91 @@
 <title>OjoolaChat</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh;background:linear-gradient(135deg,#4f46e5,#7c3aed 45%,#0ea5e9);display:flex;align-items:center;justify-content:center;padding:16px}
-.wrap{width:100%;max-width:430px}
-.logo{text-align:center;color:#fff;font-size:30px;font-weight:900}
-.sub{text-align:center;color:rgba(255,255,255,.9);font-size:14px;margin:6px 0 18px}
-.card{background:#fff;border-radius:28px;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.28)}
-.card h2{font-size:24px}
-.muted{color:#64748b;font-size:13px;margin:6px 0 18px;line-height:1.5}
-label{font-size:12px;font-weight:700;color:#334155;text-transform:uppercase;display:block;margin:14px 0 6px}
-input{width:100%;padding:14px;border:1.5px solid #e2e8f0;border-radius:14px;font-size:16px;outline:none;background:#f8fafc}
-input:focus{border-color:#7c3aed;background:#fff}
+body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh;background:linear-gradient(180deg,#2563eb,#3b82f6 40%,#dbeafe);display:flex;align-items:center;justify-content:center;padding:12px}
+body.dark{background:#0b1220}
+body.dark .card{background:#111c33;color:#fff}
+body.dark input{background:#1e293b;color:#fff;border-color:#334155}
+.wrap{width:100%;max-width:430px;position:relative;z-index:1}
+.hearts{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0}
+.hearts span{position:absolute;font-size:22px;opacity:.35}
+.logo{text-align:center;color:#fff;font-size:32px;font-weight:900}
+.sub{text-align:center;color:#dbeafe;font-size:14px;margin:4px 0 16px}
+.card{background:#fff;border-radius:28px;padding:20px;box-shadow:0 24px 60px rgba(0,0,0,.25)}
+h2{font-size:24px}
+.muted{color:#64748b;font-size:13px;margin:6px 0 16px;line-height:1.5}
+body.dark .muted{color:#94a3b8}
+label{font-size:11px;font-weight:800;color:#334155;text-transform:uppercase;display:block;margin:12px 0 6px}
+body.dark label{color:#cbd5e1}
+input{width:100%;padding:13px;border:1.5px solid #dbeafe;border-radius:14px;font-size:15px;outline:none;background:#f8fafc}
+input:focus{border-color:#2563eb;background:#fff}
 .pass-wrap{position:relative}
 .pass-wrap input{padding-right:50px}
-.eye-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:none;background:#eef2ff;border-radius:10px;cursor:pointer;font-size:17px}
-.hint{font-size:12px;color:#64748b;margin:8px 0 16px}
+.eye-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:none;background:#dbeafe;border-radius:10px;cursor:pointer;font-size:17px}
 .btn{width:100%;padding:14px;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer}
-.btn-primary{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff}
-.btn-sec{background:#f1f5f9;color:#4f46e5;margin-top:10px}
+.btn-primary{background:#2563eb;color:#fff}
+.btn-sec{background:#eff6ff;color:#2563eb;margin-top:10px}
 #msg{min-height:20px;text-align:center;font-size:13px;font-weight:600;margin-top:12px;color:#dc2626}
-.footer{text-align:center;color:rgba(255,255,255,.85);font-size:12px;margin-top:14px}
-.badge{display:inline-block;background:#dcfce7;color:#166534;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700}
 .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.logout{padding:8px 14px;background:#fee2e2;color:#b91c1c;border:none;border-radius:999px;font-weight:800;cursor:pointer}
-#messages{height:360px;overflow-y:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}
-.msg{max-width:82%;padding:10px 12px;border-radius:16px;font-size:14px;line-height:1.45;word-break:break-word}
-.msg.me{align-self:flex-end;background:#4f46e5;color:#fff;border-bottom-right-radius:4px}
-.msg.other{align-self:flex-start;background:#fff;border:1px solid #e2e8f0;border-bottom-left-radius:4px}
+.avatar{width:46px;height:46px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:900;object-fit:cover;overflow:hidden;flex-shrink:0}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.avatar.lg{width:90px;height:90px;font-size:38px}
+.chat-item{display:flex;gap:12px;align-items:center;padding:12px;border-radius:16px;cursor:pointer}
+.chat-item:hover{background:#eff6ff}
+body.dark .chat-item:hover{background:#1e293b}
+.chat-item b{font-size:15px}
+.chat-item p{font-size:13px;color:#64748b;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:190px}
+.badge{background:#2563eb;color:#fff;font-size:11px;font-weight:800;min-width:20px;height:20px;border-radius:999px;display:flex;align-items:center;justify-content:center;padding:0 6px}
+.time{font-size:11px;color:#94a3b8}
+#messages{height:340px;overflow-y:auto;background:#f0f7ff;border:1px solid #dbeafe;border-radius:18px;padding:12px;display:flex;flex-direction:column;gap:8px}
+body.dark #messages{background:#0f172a;border-color:#1e293b}
+.msg{max-width:82%;padding:10px 12px 8px;border-radius:18px;font-size:14px;line-height:1.45;word-break:break-word}
+.msg.me{align-self:flex-end;background:#2563eb;color:#fff;border-bottom-right-radius:4px}
+.msg.other{align-self:flex-start;background:#fff;border:1px solid #dbeafe;border-bottom-left-radius:4px;color:#111}
+body.dark .msg.other{background:#1e293b;color:#fff;border-color:#334155}
 .msg small{display:block;font-size:11px;opacity:.7;margin-bottom:2px}
+.tick{font-size:11px;opacity:.85;text-align:right;margin-top:2px}
+.tick.blue{color:#7dd3fc}
 .row{display:flex;gap:8px;margin-top:12px}
 .row input{flex:1}
-.send{padding:0 18px;border:none;border-radius:14px;background:#4f46e5;color:#fff;font-weight:800;font-size:20px;cursor:pointer}
-#msg2{color:#dc2626;font-size:13px;min-height:18px;margin-top:8px;text-align:center}
+.send{padding:0 18px;border:none;border-radius:14px;background:#2563eb;color:#fff;font-weight:800;font-size:20px;cursor:pointer}
+.nav{display:flex;gap:8px;margin-bottom:12px}
+.nav button{flex:1;padding:10px;border:none;border-radius:999px;font-weight:800;cursor:pointer;background:#eff6ff;color:#2563eb}
+.nav button.active{background:#2563eb;color:#fff}
+.footer{text-align:center;color:#fff;font-size:12px;margin-top:12px}
 .hidden{display:none !important}
+.splash{position:fixed;inset:0;background:linear-gradient(180deg,#2563eb,#3b82f6);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:99;color:#fff;gap:10px}
+.splash .icon{width:110px;height:110px;background:#fff;border-radius:32px;display:flex;align-items:center;justify-content:center;font-size:60px;box-shadow:0 20px 40px rgba(0,0,0,.3)}
+.toggle{display:flex;justify-content:space-between;align-items:center;background:#eff6ff;padding:12px 14px;border-radius:14px;margin-top:12px}
+body.dark .toggle{background:#1e293b}
+.switch{width:50px;height:28px;background:#cbd5e1;border-radius:999px;position:relative;cursor:pointer}
+.switch.on{background:#2563eb}
+.switch:after{content:"";position:absolute;width:22px;height:22px;background:#fff;border-radius:50%;top:3px;left:3px;transition:.2s}
+.switch.on:after{left:25px}
+.back{border:none;background:#eff6ff;color:#2563eb;padding:8px 12px;border-radius:999px;font-weight:800;cursor:pointer}
+.file-btn{display:block;text-align:center;background:#eff6ff;color:#2563eb;padding:11px;border-radius:12px;font-weight:800;cursor:pointer;margin-top:10px}
+.empty{text-align:center;padding:24px 10px;color:#64748b;font-size:14px;line-height:1.6}
 </style>
 </head>
 <body>
+<div class="hearts"><span style="left:10%;top:15%">💙</span><span style="left:85%;top:20%">💙</span><span style="left:70%;top:70%">💙</span><span style="left:15%;top:80%">💙</span></div>
+
+<div class="splash" id="splash">
+<div class="icon">💙</div>
+<div style="font-size:32px;font-weight:900">OjoolaChat</div>
+<div style="opacity:.9">Connect with Family and Friends</div>
+<div style="margin-top:16px;font-size:13px">Loading... 💙</div>
+</div>
+
 <div class="wrap">
-<div class="logo">💬 OjoolaChat</div>
+<div class="logo">💙 OjoolaChat</div>
 <div class="sub">Connect with Family and Friends</div>
 
 <div class="card" id="authCard">
 <h2 id="authTitle">Welcome back</h2>
-<p class="muted" id="authSub">Login with your email to continue chatting.</p>
+<p class="muted">Login with your email to continue chatting. 💙</p>
 <div id="nameWrap" class="hidden">
 <label>Your Name</label>
-<input id="nameInput" placeholder="e.g. Ojoola">
+<input id="nameInput" placeholder="e.g. Emmanuel">
 </div>
 <label>Email Address</label>
 <input id="emailInput" type="email" placeholder="you@gmail.com">
@@ -59,28 +99,68 @@ input:focus{border-color:#7c3aed;background:#fff}
 <input id="passInput" type="password" placeholder="Your password">
 <button type="button" class="eye-btn" id="eyeBtn">👁️</button>
 </div>
-<div class="hint">Password must be at least 8 characters.</div>
+<div style="font-size:12px;color:#64748b;margin:8px 0 14px">Password must be at least 8 characters.</div>
 <button type="button" class="btn btn-primary" id="mainBtn">Login</button>
 <button type="button" class="btn btn-sec" id="toggleBtn">Don't have account? Create Account</button>
-<div id="msg">Loading...</div>
+<div id="msg">JS Loading...</div>
+</div>
+
+<div class="card hidden" id="listCard">
+<div class="top">
+<div style="display:flex;gap:10px;align-items:center">
+<div class="avatar" id="myAvatarTop">E</div>
+<div><b id="userLabel">Hi</b><br><span style="font-size:12px;color:#16a34a">● Online 💙</span></div>
+</div>
+<button class="back" id="profileBtn">Profile</button>
+</div>
+<div class="nav">
+<button class="active" id="tabChats">Chats</button>
+<button id="tabProfile">Profile</button>
+<button id="logoutBtn2">Logout</button>
+</div>
+<div id="chatList"></div>
+<div class="muted" style="text-align:center;margin-top:10px">Your chats show only real people who created account 💙</div>
 </div>
 
 <div class="card hidden" id="chatCard">
-<div class="top"><div><b id="userLabel">Chat</b><br><span class="badge">✅ Connected to Firebase</span></div><button class="logout" id="logoutBtn" type="button">Logout</button></div>
+<div class="top">
+<div style="display:flex;gap:10px;align-items:center">
+<button class="back" id="backBtn">← Back</button>
+<div class="avatar" id="chatAvatar">👨‍👩‍👧</div>
+<div><b id="chatTitle">Family Crew</b><br><span style="font-size:12px;color:#16a34a">● Online</span></div>
+</div>
+</div>
 <div id="messages"></div>
 <div class="row">
-<input id="textInput" placeholder="Type a message...">
+<input id="textInput" placeholder="Type a message... 💙">
 <button class="send" id="sendBtn" type="button">➤</button>
 </div>
-<div id="msg2"></div>
+<div id="msg2" style="color:#dc2626;font-size:13px;min-height:18px;margin-top:8px;text-align:center"></div>
 </div>
-<div class="footer">Made with ❤️ for family & friends • OjoolaChat</div>
+
+<div class="card hidden" id="profileCard">
+<div class="top"><button class="back" id="backBtn2">← Back</button><b>Profile / Settings</b><span></span></div>
+<div style="text-align:center">
+<div class="avatar lg" id="profileAvatar">E</div>
+<div style="margin-top:10px"><b id="profileName">Emmanuel</b><br><span id="profileEmail" style="font-size:13px;color:#64748b"></span></div>
+<label for="picInput" class="file-btn">📸 Change Profile Picture - Use My Picture</label>
+<input type="file" id="picInput" accept="image/*" style="display:none">
+<div style="font-size:12px;color:#64748b;margin-top:6px">Pick any picture from your phone, e go show for chat list & chat.</div>
+</div>
+<div class="toggle"><span>🌙 Dark Mode - Deep Navy 💙</span><div class="switch" id="darkSwitch"></div></div>
+<button class="btn btn-primary" id="saveProfileBtn" style="margin-top:14px">Save Profile</button>
+<button class="btn btn-sec" id="logoutBtn" style="margin-top:10px">Logout</button>
+<div id="profileMsg" style="text-align:center;font-size:13px;margin-top:10px;color:#16a34a"></div>
+</div>
+
+<div class="footer">Made with 💙 for family & friends • OjoolaChat</div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
+setTimeout(function(){ document.getElementById("splash").style.display="none"; }, 1600);
 var firebaseConfig = {
   apiKey: "AIzaSyBXU6HnCTOAabLEyc3NANNLgZi3OJYpGVk",
   authDomain: "ojoolachat.firebaseapp.com",
@@ -89,160 +169,152 @@ var firebaseConfig = {
   messagingSenderId: "30543009981",
   appId: "1:30543009981:web:10c2641baa64864f96ffd4"
 };
+var msgEl=document.getElementById("msg");
+function showMsg(t,ok){ msgEl.textContent=t; msgEl.style.color= ok ? "#16a34a" : "#dc2626"; }
+var isSignup=false, auth=null, db=null, currentChat="Family Crew", currentChatId="family_crew", currentChatUserId=null, realUsers=[];
 
-var msgEl = document.getElementById("msg");
-var msg2El = document.getElementById("msg2");
-function showMsg(t, ok){
-  msgEl.textContent = t;
-  msgEl.style.color = ok ? "#16a34a" : "#dc2626";
+try{ firebase.initializeApp(firebaseConfig); auth=firebase.auth(); db=firebase.firestore(); showMsg("JS Loaded ✅ - Ready 💙",true); }catch(e){ showMsg("Error: "+e.message,false); }
+
+var authTitle=document.getElementById("authTitle"), nameWrap=document.getElementById("nameWrap"), nameInput=document.getElementById("nameInput"), emailInput=document.getElementById("emailInput"), passInput=document.getElementById("passInput"), mainBtn=document.getElementById("mainBtn"), toggleBtn=document.getElementById("toggleBtn"), eyeBtn=document.getElementById("eyeBtn");
+eyeBtn.onclick=function(){ if(passInput.type==="password"){passInput.type="text"; eyeBtn.textContent="🙈";} else {passInput.type="password"; eyeBtn.textContent="👁️";} };
+toggleBtn.onclick=function(){ isSignup=!isSignup; if(isSignup){authTitle.textContent="Create your account"; mainBtn.textContent="Create Account"; toggleBtn.textContent="Already have account? Login"; nameWrap.classList.remove("hidden");} else {authTitle.textContent="Welcome back"; mainBtn.textContent="Login"; toggleBtn.textContent="Don't have account? Create Account"; nameWrap.classList.add("hidden");} showMsg("",false); };
+
+function saveUserProfile(user, name){
+  if(!db) return Promise.resolve();
+  return db.collection("users").doc(user.uid).set({ name: name || user.displayName || user.email, email: user.email, uid: user.uid, photo: localStorage.getItem("ojoola_pic")||"", createdAt: firebase.firestore.FieldValue.serverTimestamp() }, {merge:true});
 }
-
-var isSignup = false;
-var auth = null;
-var db = null;
-
-try {
-  if (typeof firebase === "undefined") {
-    showMsg("Firebase did not load - check network / ON WARP and refresh", false);
+mainBtn.onclick=function(){
+  var email=emailInput.value.trim(), pass=passInput.value, name=nameInput.value.trim();
+  if(!email||!pass){showMsg("Please enter email and password",false);return;}
+  if(pass.length<8){showMsg("Password must be at least 8 characters",false);return;}
+  if(isSignup && !name){showMsg("Please enter your name",false);return;}
+  mainBtn.disabled=true; mainBtn.textContent="Please wait...";
+  if(isSignup){
+    auth.createUserWithEmailAndPassword(email,pass).then(function(cred){
+      var p = name ? cred.user.updateProfile({displayName:name}) : Promise.resolve();
+      return p.then(function(){ return saveUserProfile(cred.user, name); });
+    }).then(function(){ showMsg("Account created! Welcome 💙",true); mainBtn.disabled=false; mainBtn.textContent="Create Account"; }).catch(function(e){ showMsg(e.message,false); mainBtn.disabled=false; mainBtn.textContent="Create Account"; });
   } else {
-    firebase.initializeApp(firebaseConfig);
-    auth = firebase.auth();
-    db = firebase.firestore();
-    showMsg("JS Loaded ✅ - Ready", true);
+    auth.signInWithEmailAndPassword(email,pass).then(function(cred){ return saveUserProfile(cred.user, cred.user.displayName); }).then(function(){ showMsg("Login successful! 💙",true); mainBtn.disabled=false; mainBtn.textContent="Login"; }).catch(function(e){ showMsg(e.message,false); mainBtn.disabled=false; mainBtn.textContent="Login"; });
   }
-} catch(e) {
-  showMsg("Error: " + e.message, false);
+};
+function showOnly(id){ ["authCard","listCard","chatCard","profileCard"].forEach(function(x){ document.getElementById(x).classList.add("hidden"); }); document.getElementById(id).classList.remove("hidden"); }
+document.getElementById("logoutBtn").onclick=function(){ auth.signOut(); };
+document.getElementById("logoutBtn2").onclick=function(){ auth.signOut(); };
+document.getElementById("profileBtn").onclick=function(){ showOnly("profileCard"); };
+document.getElementById("tabProfile").onclick=function(){ showOnly("profileCard"); };
+document.getElementById("tabChats").onclick=function(){ showOnly("listCard"); };
+document.getElementById("backBtn").onclick=function(){ showOnly("listCard"); renderList(); };
+document.getElementById("backBtn2").onclick=function(){ showOnly("listCard"); };
+document.getElementById("sendBtn").onclick=sendMsg;
+document.getElementById("textInput").onkeydown=function(e){ if(e.key==="Enter") sendMsg(); };
+
+var myPic=localStorage.getItem("ojoola_pic")||"";
+function applyPic(){
+  if(!myPic) return;
+  ["myAvatarTop","profileAvatar"].forEach(function(id){ var el=document.getElementById(id); el.innerHTML=""; var img=document.createElement("img"); img.src=myPic; el.appendChild(img); });
 }
-
-var authTitle = document.getElementById("authTitle");
-var authSub = document.getElementById("authSub");
-var nameWrap = document.getElementById("nameWrap");
-var nameInput = document.getElementById("nameInput");
-var emailInput = document.getElementById("emailInput");
-var passInput = document.getElementById("passInput");
-var mainBtn = document.getElementById("mainBtn");
-var toggleBtn = document.getElementById("toggleBtn");
-var eyeBtn = document.getElementById("eyeBtn");
-
-eyeBtn.onclick = function(){
-  if (passInput.type === "password") { passInput.type = "text"; eyeBtn.textContent = "🙈"; }
-  else { passInput.type = "password"; eyeBtn.textContent = "👁️"; }
+document.getElementById("picInput").onchange=function(e){
+  var f=e.target.files[0]; if(!f) return;
+  var r=new FileReader();
+  r.onload=function(ev){ myPic=ev.target.result; localStorage.setItem("ojoola_pic",myPic); applyPic(); document.getElementById("profileMsg").textContent="Profile picture updated 💙"; if(auth.currentUser){ db.collection("users").doc(auth.currentUser.uid).set({photo:myPic},{merge:true}); } };
+  r.readAsDataURL(f);
 };
+document.getElementById("saveProfileBtn").onclick=function(){ document.getElementById("profileMsg").textContent="Profile saved 💙"; setTimeout(function(){ showOnly("listCard"); },600); };
+var darkSwitch=document.getElementById("darkSwitch");
+darkSwitch.onclick=function(){ document.body.classList.toggle("dark"); darkSwitch.classList.toggle("on"); localStorage.setItem("ojoola_dark", document.body.classList.contains("dark")?"1":"0"); };
+if(localStorage.getItem("ojoola_dark")==="1"){ document.body.classList.add("dark"); darkSwitch.classList.add("on"); }
 
-toggleBtn.onclick = function(){
-  isSignup = !isSignup;
-  if (isSignup) {
-    authTitle.textContent = "Create your account";
-    authSub.textContent = "Create account with your email to start chatting.";
-    mainBtn.textContent = "Create Account";
-    toggleBtn.textContent = "Already have account? Login";
-    nameWrap.classList.remove("hidden");
+// REAL CHAT LIST - No fake contacts
+function renderList(){
+  var list=document.getElementById("chatList"); list.innerHTML="";
+  // 1. Family Crew - always first, real group chat
+  var group=document.createElement("div"); group.className="chat-item";
+  group.innerHTML='<div class="avatar">👨‍👩‍👧</div><div style="flex:1"><div style="display:flex;justify-content:space-between"><b>Family Crew</b><span class="time">Group</span></div><p>Group chat for everybody 💙</p></div><div class="badge">💙</div>';
+  group.onclick=function(){ openChat("Family Crew","👨‍👩‍👧",null,"family_crew"); };
+  list.appendChild(group);
+  // 2. Real users
+  if(realUsers.length===0){
+    var empty=document.createElement("div"); empty.className="empty";
+    empty.innerHTML="No other real contacts yet.<br>Share your link, make them create account,<br>their name go appear here automatically 💙";
+    list.appendChild(empty);
   } else {
-    authTitle.textContent = "Welcome back";
-    authSub.textContent = "Login with your email to continue chatting.";
-    mainBtn.textContent = "Login";
-    toggleBtn.textContent = "Don't have account? Create Account";
-    nameWrap.classList.add("hidden");
-  }
-  showMsg("", false);
-};
-
-mainBtn.onclick = function(){
-  showMsg("Button clicked ✅ - working...", true);
-  var email = emailInput.value.trim();
-  var pass = passInput.value;
-  var name = nameInput.value.trim();
-  if (!email || !pass) { showMsg("Please enter email and password", false); return; }
-  if (pass.length < 8) { showMsg("Password must be at least 8 characters", false); return; }
-  if (isSignup && !name) { showMsg("Please enter your name", false); return; }
-  if (!auth) { showMsg("Firebase not loaded - ON WARP and refresh", false); return; }
-  mainBtn.disabled = true;
-  mainBtn.textContent = "Please wait...";
-  if (isSignup) {
-    auth.createUserWithEmailAndPassword(email, pass).then(function(cred){
-      if (name) { return cred.user.updateProfile({displayName: name}); }
-    }).then(function(){
-      showMsg("Account created! Welcome", true);
-      mainBtn.disabled = false;
-      mainBtn.textContent = "Create Account";
-    }).catch(function(e){
-      var m = e.message;
-      if (e.code === "auth/email-already-in-use") m = "This email already has account. Tap Login instead.";
-      if (e.code === "auth/operation-not-allowed") m = "Email/Password NOT enabled in Firebase. Go enable am.";
-      if (e.code === "auth/invalid-email") m = "Please enter a valid email.";
-      showMsg(m, false);
-      mainBtn.disabled = false;
-      mainBtn.textContent = "Create Account";
-    });
-  } else {
-    auth.signInWithEmailAndPassword(email, pass).then(function(){
-      showMsg("Login successful!", true);
-      mainBtn.disabled = false;
-      mainBtn.textContent = "Login";
-    }).catch(function(e){
-      var m = e.message;
-      if (e.code === "auth/invalid-credential") m = "Wrong email or password. Try again.";
-      if (e.code === "auth/user-not-found") m = "No account for this email. Tap Create Account.";
-      if (e.code === "auth/operation-not-allowed") m = "Email/Password NOT enabled in Firebase. Go enable am.";
-      showMsg(m, false);
-      mainBtn.disabled = false;
-      mainBtn.textContent = "Login";
+    realUsers.forEach(function(u){
+      var div=document.createElement("div"); div.className="chat-item";
+      var initial=(u.name||u.email||"?").charAt(0).toUpperCase();
+      var avatarHtml = u.photo ? '<div class="avatar"><img src="'+u.photo+'"></div>' : '<div class="avatar">'+initial+'</div>';
+      div.innerHTML=avatarHtml+'<div style="flex:1"><div style="display:flex;justify-content:space-between"><b>'+u.name+'</b><span class="time">'+u.email+'</span></div><p>Tap to chat privately 💙</p></div>';
+      div.onclick=function(){ openChat(u.name, initial, u.uid, getPrivateChatId(auth.currentUser.uid, u.uid)); };
+      list.appendChild(div);
     });
   }
-};
-
-document.getElementById("logoutBtn").onclick = function(){ auth.signOut(); };
-document.getElementById("sendBtn").onclick = sendMsg;
-document.getElementById("textInput").onkeydown = function(e){ if(e.key==="Enter") sendMsg(); };
-
+}
+function getPrivateChatId(a,b){ return "private_"+[a,b].sort().join("_"); }
+function openChat(name, emoji, userId, chatId){
+  currentChat=name; currentChatUserId=userId; currentChatId=chatId;
+  document.getElementById("chatTitle").textContent=name;
+  document.getElementById("chatAvatar").textContent=emoji;
+  showOnly("chatCard");
+  // Re-render messages for this chat
+  renderMessages();
+}
 function sendMsg(){
-  var input = document.getElementById("textInput");
-  var text = input.value.trim();
-  if (!text) return;
-  var user = auth.currentUser;
-  if (!user) { msg2El.textContent = "Please login first"; return; }
-  db.collection("messages").add({ text: text, name: user.displayName || user.email, uid: user.uid, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).then(function(){
-    input.value = ""; msg2El.textContent = "";
-  }).catch(function(e){ msg2El.textContent = "Could not send: " + e.message; });
+  var input=document.getElementById("textInput");
+  var text=input.value.trim(); if(!text) return;
+  var user=auth.currentUser; if(!user){ document.getElementById("msg2").textContent="Please login first"; return; }
+  db.collection("messages").add({ text:text, name:user.displayName||user.email, uid:user.uid, chatId: currentChatId, chatName: currentChat, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).then(function(){ input.value=""; document.getElementById("msg2").textContent=""; }).catch(function(e){ document.getElementById("msg2").textContent="Could not send: "+e.message; });
 }
-
-if (auth) {
-  auth.onAuthStateChanged(function(user){
-    var authCard = document.getElementById("authCard");
-    var chatCard = document.getElementById("chatCard");
-    if (user) {
-      authCard.classList.add("hidden");
-      chatCard.classList.remove("hidden");
-      document.getElementById("userLabel").textContent = "Hi, " + (user.displayName || user.email);
-      startChat();
-    } else {
-      authCard.classList.remove("hidden");
-      chatCard.classList.add("hidden");
-    }
+var allMessages=[];
+function renderMessages(){
+  var box=document.getElementById("messages"); box.innerHTML="";
+  allMessages.forEach(function(d){
+    if(d.chatId && d.chatId!==currentChatId) return;
+    if(!d.chatId && currentChatId!=="family_crew") return;
+    var div=document.createElement("div");
+    var me=auth.currentUser && d.uid===auth.currentUser.uid;
+    div.className="msg "+(me?"me":"other");
+    var small=document.createElement("small"); small.textContent=d.name||"User"; div.appendChild(small);
+    var span=document.createElement("span"); span.textContent=d.text||""; div.appendChild(span);
+    var tick=document.createElement("div"); tick.className="tick "+(me?"blue":"");
+    tick.textContent = me ? "✓✓  • Seen 💙" : "✓✓";
+    div.appendChild(tick);
+    box.appendChild(div);
+  });
+  box.scrollTop=box.scrollHeight;
+}
+var listenersStarted=false;
+function startListeners(){
+  if(listenersStarted) return; listenersStarted=true;
+  // Listen to real users
+  db.collection("users").onSnapshot(function(snap){
+    var me=auth.currentUser;
+    realUsers=[];
+    snap.forEach(function(doc){
+      var d=doc.data();
+      if(me && d.uid===me.uid) return;
+      realUsers.push(d);
+    });
+    // If we are on list screen, re-render
+    if(!document.getElementById("listCard").classList.contains("hidden")) renderList();
+  });
+  // Listen to messages
+  db.collection("messages").orderBy("createdAt","asc").onSnapshot(function(snap){
+    allMessages=[];
+    snap.forEach(function(doc){ allMessages.push(doc.data()); });
+    if(!document.getElementById("chatCard").classList.contains("hidden")) renderMessages();
   });
 }
-
-var unsubStarted = false;
-function startChat(){
-  if (unsubStarted) return;
-  unsubStarted = true;
-  db.collection("messages").orderBy("createdAt","asc").onSnapshot(function(snap){
-    var box = document.getElementById("messages");
-    box.innerHTML = "";
-    snap.forEach(function(doc){
-      var d = doc.data();
-      var div = document.createElement("div");
-      var me = auth.currentUser && d.uid === auth.currentUser.uid;
-      div.className = "msg " + (me ? "me" : "other");
-      var small = document.createElement("small");
-      small.textContent = d.name || "User";
-      div.appendChild(small);
-      var span = document.createElement("span");
-      span.textContent = d.text || "";
-      div.appendChild(span);
-      box.appendChild(div);
-    });
-    box.scrollTop = box.scrollHeight;
+if(auth){
+  auth.onAuthStateChanged(function(user){
+    if(user){
+      document.getElementById("userLabel").textContent="Hi, "+(user.displayName||user.email);
+      document.getElementById("profileName").textContent=user.displayName||"User";
+      document.getElementById("profileEmail").textContent=user.email;
+      var initial=(user.displayName||user.email||"E").charAt(0).toUpperCase();
+      document.getElementById("myAvatarTop").textContent=initial;
+      document.getElementById("profileAvatar").textContent=initial;
+      applyPic(); renderList(); showOnly("listCard"); startListeners();
+    } else { showOnly("authCard"); }
   });
 }
 </script>
