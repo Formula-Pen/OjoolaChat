@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OjoolaChat</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{background:#0A66FF;transition:.3s}
+.screen{display:none;min-height:100vh;padding:22px;flex-direction:column}
+.screen.active{display:flex}
+.center{justify-content:center;align-items:center;text-align:center;background:linear-gradient(160deg,#0A66FF,#00C6FF);color:#fff}
+.logoBox{width:140px;height:140px;background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.6);border-radius:35px;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 40px rgba(0,0,0,.25);margin-bottom:20px}
+.logoInner{width:105px;height:105px;background:#fff;border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:52px}
+.smallLogo{width:90px;height:90px}.smallInner{width:65px;height:65px;font-size:32px}
+h1{font-size:42px}.title2{font-size:32px}.tag{opacity:.95;margin-top:8px;font-size:17px}.small{margin-top:14px;font-size:14px;opacity:.85}
+.whiteCard{background:#fff;color:#111;border-radius:24px;padding:22px;width:100%;max-width:380px;margin-top:20px;box-shadow:0 15px 35px rgba(0,0,0,.2)}
+input{width:100%;padding:16px;border-radius:14px;border:1.5px solid #E5E7EB;background:#F8FAFF;font-size:16px;margin-top:12px;outline:none}
+.btn{width:100%;padding:16px;border:none;border-radius:14px;background:#0A66FF;color:#fff;font-weight:700;font-size:17px;margin-top:16px;cursor:pointer}
+.btnWhite{background:#fff;color:#0A66FF;max-width:320px}
+.lightBg{background:#F2F6FF;color:#111}.top{display:flex;justify-content:space-between;align-items:center}
+.sub{color:#666;font-size:13px}.grey{color:#666;font-size:14px}.flex1{flex:1}.time{color:#0A66FF;font-weight:700}
+.avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#0A66FF,#00C6FF);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;position:relative;flex-shrink:0}
+.avatar.orange{background:linear-gradient(135deg,#FF6B6B,#FFA500)}.avatar.purple{background:linear-gradient(135deg,#8B5CF6,#EC4899)}
+.dot{position:absolute;right:2px;bottom:2px;width:13px;height:13px;background:#22C55E;border:2px solid #fff;border-radius:50%}
+.chatCard{background:#fff;border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center;margin-top:12px;box-shadow:0 4px 15px rgba(0,0,0,.06);cursor:pointer}
+.bubble{max-width:82%;padding:12px 16px;border-radius:20px;font-size:15px;line-height:1.4;margin-top:10px}
+.me{background:#0A66FF;color:#fff;align-self:flex-end;border-bottom-right-radius:6px}
+.mum{background:#fff;color:#111;align-self:flex-start;border-bottom-left-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.pill{background:#EAF2FF;color:#0A66FF;padding:8px 12px;border-radius:20px;font-size:13px;font-weight:700;border:none;cursor:pointer}
+.back{font-size:22px;cursor:pointer}.chatHead{display:flex;gap:10px;align-items:center}.smallAv{width:42px;height:42px}.online{color:#22C55E;font-size:12px}
+.msgsWrap{display:flex;flex-direction:column;flex:1;overflow:auto}
+.typing{display:none;background:#fff;padding:8px 12px;border-radius:14px;font-size:13px;color:#666;margin-top:10px;align-self:flex-start}
+.inputRow{display:flex;gap:10px;margin-top:10px;align-items:center}.inputRow input{margin-top:0}
+.sendBtn{width:60px;height:52px;border:none;border-radius:50%;background:#0A66FF;color:#fff;font-size:18px;cursor:pointer;flex-shrink:0}
+.emojiBox{display:none;background:#fff;border-radius:14px;padding:12px;font-size:24px;margin-top:10px}
+.centerCard{flex-direction:column;text-align:center;padding:22px}.bigAv{width:80px;height:80px;font-size:36px}.right{margin-left:auto}.green{color:#22C55E}.logout{background:#FF3B30}
+body.dark{background:#0B1220}.dark .lightBg{background:#0B1220;color:#fff}.dark .chatCard{background:#1A2438;color:#fff}.dark .bubble.mum{background:#1A2438;color:#fff}.dark input{background:#1A2438;color:#fff;border-color:#2A3550}
+</style>
+</head>
+<body>
+<div id="splash" class="screen active center">
+<div class="logoBox"><div class="logoInner">💬💙</div></div>
+<h1>OjoolaChat</h1><p class="tag">Made for Family and Friends</p><p class="small">Safe • Secure • Fast</p>
+<button class="btn btnWhite" onclick="showScreen('login')">Get Started →</button>
+</div>
+<div id="login" class="screen center">
+<div class="logoBox smallLogo"><div class="logoInner smallInner">💬💙</div></div>
+<h1 class="title2">Welcome Back</h1><p class="tag">Login with your phone number</p>
+<div class="whiteCard"><label style="font-weight:700">Phone Number</label><input placeholder="+234 801 234 5678"><button class="btn" onclick="showScreen('chats')">Continue →</button><p style="text-align:center;font-size:13px;color:#666;margin-top:12px">We will send you a code to verify</p></div>
+</div>
+<div id="chats" class="screen lightBg">
+<div class="top"><div><h2>Chats</h2><p class="sub">3 chats • 2 online</p></div><button class="pill" onclick="toggleDark()">🌙 Dark</button></div>
+<input id="searchInput" placeholder="🔍 Search family & friends..." oninput="filterChats()">
+<div id="chatList">
+<div class="chatCard" data-name="mum" onclick="showScreen('chat')"><div class="avatar">❤️<span class="dot"></span></div><div class="flex1"><b>Mum ❤️</b><div class="grey">Good morning dear ❤️</div></div><span class="time">9:41</span></div>
+<div class="chatCard" data-name="family group"><div class="avatar orange">👨‍👩‍👧</div><div class="flex1"><b>Family Group</b><div class="grey">Dad: Jollof rice for Sunday?</div></div><span>8:30</span></div>
+<div class="chatCard" data-name="friends"><div class="avatar purple">👭</div><div class="flex1"><b>Friends</b><div class="grey">Ada: See you tomorrow!</div></div><span>Yesterday</span></div>
+</div>
+<div class="chatCard" onclick="showScreen('profile')"><div class="avatar">⚙️</div><div class="flex1"><b>My Profile / Settings</b><div class="grey">Dark Mode, Privacy</div></div><span>›</span></div>
+</div>
+<div id="chat" class="screen lightBg">
+<div class="top"><span class="back" onclick="showScreen('chats')">←</span><div class="chatHead"><div class="avatar smallAv">❤️<span class="dot"></span></div><div><b>Mum ❤️</b><div class="online">● Online</div></div></div><span>📞 📹</span></div>
+<div class="msgsWrap"><div style="text-align:center;margin-top:12px"><span style="background:#fff;padding:6px 12px;border-radius:20px;font-size:12px;color:#666">Today</span></div>
+<div class="bubble mum">Good morning dear ❤️</div><div class="bubble mum">Jollof rice for Sunday?</div><div class="bubble me">Yes Mum! I go come early 😊</div><div id="msgs"></div><div id="typing" class="typing">Mum is typing... ●●●</div></div>
+<div class="inputRow"><button style="font-size:24px;background:none;border:none" onclick="toggleEmoji()">😊</button><input id="msgInput" placeholder="Type a message..."><button class="sendBtn" onclick="sendMsg()">➤</button></div>
+<div id="emojiBox" class="emojiBox">😊 😂 ❤️ 🔥 🙏 😍 🎉 👏 🥰 😘 🍲</div>
+</div>
+<div id="profile" class="screen lightBg">
+<div class="top"><span class="back" onclick="showScreen('chats')">←</span><h2>Profile</h2><span></span></div>
+<div class="chatCard centerCard"><div class="avatar bigAv">❤️</div><h3>Mum</h3><p class="grey">+234 801 234 5678</p></div>
+<div class="chatCard">🌙 Dark Mode <button class="pill right" onclick="toggleDark()">Toggle</button></div>
+<div class="chatCard">🔔 Notifications <b class="right green">ON</b></div>
+<div class="chatCard">🔒 Privacy</div>
+<button class="btn logout" onclick="showScreen('login')">Log Out</button>
+</div>
+<script>
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');window.scrollTo(0,0);}
+function toggleDark(){document.body.classList.toggle('dark');}
+function filterChats(){let q=document.getElementById('searchInput').value.toLowerCase();document.querySelectorAll('#chatList .chatCard').forEach(c=>{let n=c.getAttribute('data-name');c.style.display=n.includes(q)?'flex':'none';});}
+function toggleEmoji(){let b=document.getElementById('emojiBox');b.style.display=b.style.display==='block'?'none':'block';}
+function sendMsg(){let input=document.getElementById('msgInput');let v=input.value.trim();if(!v)return;let d=document.createElement('div');d.className='bubble me';d.innerText=v;document.getElementById('msgs').appendChild(d);input.value='';document.getElementById('emojiBox').style.display='none';let t=document.getElementById('typing');t.style.display='block';setTimeout(()=>{t.style.display='none';let r=document.createElement('div');r.className='bubble mum';r.innerText='Okay dear ❤️';document.getElementById('msgs').appendChild(r);},1200);}
+document.getElementById('msgInput').addEventListener('keypress',e=>{if(e.key==='Enter')sendMsg();});
+document.getElementById('emojiBox').addEventListener('click',e=>{document.getElementById('msgInput').value+=e.target.innerText;});
+</script>
+</body>
+</html>
