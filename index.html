@@ -3,38 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OjoolaChat</title>
+<title>OjoolaChat — Connect with Family and Friends</title>
 <style>
-*{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
-body{margin:0;background:linear-gradient(135deg,#2563eb,#1e40af);min-height:100vh;color:#fff}
-.wrap{max-width:520px;margin:0 auto;padding:20px 14px}
-.logo{font-size:28px;font-weight:800;text-align:center;margin-top:18px}
-.sub{text-align:center;opacity:.9;margin:8px 0 20px}
-.card{background:#fff;color:#111;border-radius:20px;padding:18px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
-h2{margin:0 0 6px;font-size:22px}
-p.muted{color:#666;font-size:14px;margin:0 0 16px}
-input{width:100%;padding:13px;border:1px solid #ddd;border-radius:12px;margin-bottom:12px;font-size:15px}
-button{width:100%;padding:13px;border:0;border-radius:12px;background:#2563eb;color:#fff;font-weight:700;font-size:16px;cursor:pointer}
-button.sec{background:#eef2ff;color:#2563eb;margin-top:10px}
-#msg{color:#dc2626;font-size:13px;min-height:18px;text-align:center;margin-top:10px}
-#chatCard{display:none}
-#messages{height:380px;overflow-y:auto;padding:10px;margin-bottom:12px;background:#eef2ff;border-radius:14px;display:flex;flex-direction:column;gap:8px}
-.bubble{max-width:80%;padding:9px 11px;border-radius:14px;font-size:14px;line-height:1.4;word-break:break-word;position:relative}
-.bubble.mine{align-self:flex-end;background:#2563eb;color:#fff;border-bottom-right-radius:4px}
-.bubble.theirs{align-self:flex-start;background:#fff;color:#111;border:1px solid #e5e7eb;border-bottom-left-radius:4px}
-.bubble b{font-size:12px;display:block;opacity:.8}
-.bubble small{font-size:11px;opacity:.7;display:block;text-align:right;margin-top:4px}
-.del{font-size:11px;cursor:pointer;opacity:.7;margin-top:4px;display:inline-block;text-decoration:underline}
-.row{display:flex;gap:8px}
-.row input{margin:0}
-.row button{width:90px}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.top button{width:auto;padding:8px 14px;background:#fee2e2;color:#991b1b;font-size:13px}
-.badge{text-align:center;background:#dcfce7;color:#166534;padding:8px;border-radius:10px;font-size:13px;margin-bottom:12px}
-.hint{font-size:12px;color:#666;margin:-6px 0 12px}
-.pass-wrap{position:relative;margin-bottom:12px}
-.pass-wrap input{margin-bottom:0;padding-right:48px}
-.eye-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:36px;height:36px;padding:0;background:transparent;color:#666;font-size:18px;border-radius:50%}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh;background:radial-gradient(900px 500px at 10% 0%,#a78bfa 0%,transparent 55%),radial-gradient(800px 500px at 100% 20%,#38bdf8 0%,transparent 55%),linear-gradient(135deg,#4f46e5,#7c3aed 45%,#0ea5e9);display:flex;align-items:center;justify-content:center;padding:18px;color:#0f172a}
+.wrap{width:100%;max-width:430px}
+.logo{text-align:center;color:#fff;font-size:30px;font-weight:900;letter-spacing:-.5px;text-shadow:0 4px 20px rgba(0,0,0,.25)}
+.sub{text-align:center;color:rgba(255,255,255,.9);font-size:14px;margin:6px 0 18px}
+.card{background:rgba(255,255,255,.97);border-radius:28px;padding:24px;box-shadow:0 24px 60px rgba(0,0,0,.28)}
+.card h2{font-size:24px;letter-spacing:-.5px}
+.muted{color:#64748b;font-size:13.5px;margin:6px 0 18px;line-height:1.5}
+label{font-size:12px;font-weight:700;color:#334155;letter-spacing:.04em;text-transform:uppercase;display:block;margin:14px 0 6px}
+input{width:100%;padding:14px;border:1.5px solid #e2e8f0;border-radius:14px;font-size:16px;outline:none;background:#f8fafc}
+input:focus{border-color:#7c3aed;background:#fff;box-shadow:0 0 0 4px rgba(124,58,237,.12)}
+.pass-wrap{position:relative}
+.pass-wrap input{padding-right:50px}
+.eye-btn{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:38px;height:38px;border:none;background:#eef2ff;border-radius:10px;cursor:pointer;font-size:17px;z-index:2}
+.hint{font-size:12px;color:#64748b;margin:8px 0 16px}
+.btn{width:100%;padding:14px;border:none;border-radius:14px;font-size:16px;font-weight:800;cursor:pointer}
+.btn-primary{background:linear-gradient(135deg,#4f46e5,#7c3aed);color:#fff;box-shadow:0 10px 22px rgba(79,70,229,.35)}
+.btn-primary:active{transform:scale(.98)}
+.btn-primary:disabled{opacity:.6}
+.btn-sec{background:#f1f5f9;color:#4f46e5;margin-top:10px}
+#msg{min-height:20px;text-align:center;font-size:13px;font-weight:600;margin-top:12px;color:#dc2626}
+#msg.ok{color:#16a34a}
+.footer{text-align:center;color:rgba(255,255,255,.85);font-size:12px;margin-top:14px}
+.badge{display:inline-flex;gap:6px;align-items:center;background:#dcfce7;color:#166534;padding:7px 10px;border-radius:999px;font-size:12px;font-weight:700}
+.top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.top b{font-size:18px}
+.logout{width:auto;padding:8px 14px;background:#fee2e2;color:#b91c1c;border:none;border-radius:999px;font-weight:800;cursor:pointer}
+#messages{height:360px;overflow-y:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:16px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.msg{max-width:82%;padding:10px 12px;border-radius:16px;font-size:14px;line-height:1.45;word-break:break-word}
+.msg.me{align-self:flex-end;background:#4f46e5;color:#fff;border-bottom-right-radius:4px}
+.msg.other{align-self:flex-start;background:#fff;border:1px solid #e2e8f0;border-bottom-left-radius:4px}
+.msg small{display:block;font-size:11px;opacity:.7;margin-bottom:2px}
+.row{display:flex;gap:8px;margin-top:12px}
+.row input{flex:1}
+.send{padding:0 18px;border:none;border-radius:14px;background:#4f46e5;color:#fff;font-weight:800;font-size:20px;cursor:pointer}
+#msg2{color:#dc2626;font-size:13px;min-height:18px;margin-top:8px;text-align:center}
+.hidden{display:none!important}
 </style>
 </head>
 <body>
@@ -44,70 +51,151 @@ button.sec{background:#eef2ff;color:#2563eb;margin-top:10px}
 
 <div class="card" id="authCard">
 <h2 id="authTitle">Welcome back</h2>
-<p class="muted" id="authSub">Login with your email to continue.</p>
-<input id="nameInput" placeholder="Your Name (for Sign Up only)" style="display:none">
-<input id="emailInput" type="email" placeholder="Email address">
+<p class="muted" id="authSub">Login with your email to continue chatting.</p>
+<div id="nameWrap" class="hidden">
+<label>Your Name</label>
+<input id="nameInput" placeholder="e.g. Ojoola" autocomplete="name">
+</div>
+<label>Email Address</label>
+<input id="emailInput" type="email" placeholder="you@gmail.com" autocomplete="email">
+<label>Password</label>
 <div class="pass-wrap">
-<input id="passInput" type="password" placeholder="Password (min 8: letter + number + symbol)">
+<input id="passInput" type="password" placeholder="Your password" autocomplete="current-password">
 <button type="button" class="eye-btn" id="eyeBtn">👁️</button>
 </div>
-<div class="hint">Password must be at least 8 characters with letter, number & symbol. e.g. Ojoola@123</div>
-<button id="mainBtn">Login</button>
-<button class="sec" id="toggleBtn">Don't have account? Create Account</button>
+<div class="hint">Password must be at least 8 characters.</div>
+<button type="button" class="btn btn-primary" id="mainBtn">Login</button>
+<button type="button" class="btn btn-sec" id="toggleBtn">Don't have account? Create Account</button>
 <div id="msg"></div>
-<div style="text-align:center;margin-top:14px;font-size:12px;color:#999">✅ Firebase Connected • ojoolachat</div>
 </div>
 
-<div class="card" id="chatCard">
-<div class="top"><div><b id="userLabel">Chat</b><div style="font-size:12px;color:#666">Family & Friends • Group Chat</div></div><button id="logoutBtn">Logout</button></div>
-<div class="badge">✅ Connected to Firebase</div>
+<div class="card hidden" id="chatCard">
+<div class="top"><div><b id="userLabel">Chat</b><br><span class="badge">✅ Connected to Firebase</span></div><button class="logout" id="logoutBtn" type="button">Logout</button></div>
 <div id="messages"></div>
-<div class="row"><input id="textInput" placeholder="Type a message..."><button id="sendBtn">Send</button></div>
-<div id="msg2" style="color:#dc2626;font-size:13px;min-height:18px;text-align:center;margin-top:8px"></div>
+<div class="row">
+<input id="textInput" placeholder="Type a message..." autocomplete="off">
+<button class="send" id="sendBtn" type="button">➤</button>
 </div>
+<div id="msg2"></div>
+</div>
+
+<div class="footer">Made with ❤️ for family & friends • OjoolaChat</div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// 👉 PASTE YOUR REAL CONFIG HERE FROM FIREBASE CONSOLE > PROJECT SETTINGS
 const firebaseConfig = {
-  apiKey: "AIzaSyBXU6HnCTOAabLEyc3NANNLgZi3OJYpGVk",
+  apiKey: "PASTE_YOUR_API_KEY",
   authDomain: "ojoolachat.firebaseapp.com",
   projectId: "ojoolachat",
-  storageBucket: "ojoolachat.firebasestorage.app",
-  messagingSenderId: "30543009981",
-  appId: "1:30543009981:web:10c2641baa64864f96ffd4"
+  storageBucket: "ojoolachat.appspot.com",
+  messagingSenderId: "PASTE_YOUR_SENDER_ID",
+  appId: "PASTE_YOUR_APP_ID"
 };
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
 
-let isSignup = false;
-let unsub = null;
-const authCard = document.getElementById('authCard');
-const chatCard = document.getElementById('chatCard');
-const msg = document.getElementById('msg');
-const passInput = document.getElementById('passInput');
-const eyeBtn = document.getElementById('eyeBtn');
+const msg=document.getElementById('msg');
+const msg2=document.getElementById('msg2');
+const showMsg=(t,ok=false)=>{msg.textContent=t;msg.style.color=ok?'#16a34a':'#dc2626';};
+let isSignup=false;
+let app,auth,db;
+try{app=initializeApp(firebaseConfig);auth=getAuth(app);db=getFirestore(app);}catch(e){showMsg('Firebase config error: check firebaseConfig');console.error(e);}
+const authTitle=document.getElementById('authTitle');
+const authSub=document.getElementById('authSub');
+const nameWrap=document.getElementById('nameWrap');
+const nameInput=document.getElementById('nameInput');
+const emailInput=document.getElementById('emailInput');
+const passInput=document.getElementById('passInput');
+const mainBtn=document.getElementById('mainBtn');
+const toggleBtn=document.getElementById('toggleBtn');
+const eyeBtn=document.getElementById('eyeBtn');
 
-eyeBtn.onclick = () => {
-  const isHidden = passInput.type === 'password';
-  passInput.type = isHidden ? 'text' : 'password';
-  eyeBtn.textContent = isHidden ? '🙈' : '👁️';
-};
-function isStrongPassword(pass){
-  if(pass.length < 8) return false;
-  return /[A-Za-z]/.test(pass) && /[0-9]/.test(pass) && /[^A-Za-z0-9]/.test(pass);
+eyeBtn.addEventListener('click',()=>{
+  const isPass=passInput.type==='password';
+  passInput.type=isPass?'text':'password';
+  eyeBtn.textContent=isPass?'🙈':'👁️';
+});
+toggleBtn.addEventListener('click',()=>{
+  isSignup=!isSignup;
+  authTitle.textContent=isSignup?'Create your account':'Welcome back';
+  authSub.textContent=isSignup?'Create account with your email to start chatting.':'Login with your email to continue chatting.';
+  mainBtn.textContent=isSignup?'Create Account':'Login';
+  toggleBtn.textContent=isSignup?'Already have account? Login':"Don't have account? Create Account";
+  nameWrap.classList.toggle('hidden',!isSignup);
+  showMsg('');
+});
+mainBtn.addEventListener('click',async()=>{
+  const email=emailInput.value.trim();
+  const pass=passInput.value;
+  const name=nameInput.value.trim();
+  if(!email||!pass){showMsg('Please enter email and password');return;}
+  if(pass.length<8){showMsg('Password must be at least 8 characters');return;}
+  if(isSignup&&!name){showMsg('Please enter your name');return;}
+  mainBtn.disabled=true;mainBtn.textContent='Please wait...';
+  try{
+    if(isSignup){
+      const cred=await createUserWithEmailAndPassword(auth,email,pass);
+      if(name) await updateProfile(cred.user,{displayName:name});
+      showMsg('Account created! Welcome 🎉',true);
+    }else{
+      await signInWithEmailAndPassword(auth,email,pass);
+      showMsg('Login successful! 🎉',true);
+    }
+  }catch(e){
+    console.error(e);
+    let m=e.message||'Something went wrong';
+    if(e.code==='auth/email-already-in-use') m='This email already has account. Tap Login instead.';
+    if(e.code==='auth/invalid-credential') m='Wrong email or password. Try again.';
+    if(e.code==='auth/user-not-found') m='No account for this email. Tap Create Account.';
+    if(e.code==='auth/invalid-email') m='Please enter a valid email.';
+    if(e.code==='auth/weak-password') m='Password too weak. Use 8+ with letters & numbers.';
+    showMsg(m);
+  }finally{mainBtn.disabled=false;mainBtn.textContent=isSignup?'Create Account':'Login';}
+});
+document.getElementById('logoutBtn').addEventListener('click',()=>signOut(auth));
+document.getElementById('sendBtn').addEventListener('click',sendMsg);
+document.getElementById('textInput').addEventListener('keydown',(e)=>{if(e.key==='Enter')sendMsg();});
+passInput.addEventListener('keydown',(e)=>{if(e.key==='Enter')mainBtn.click();});
+async function sendMsg(){
+  const input=document.getElementById('textInput');
+  const text=input.value.trim();
+  if(!text) return;
+  const user=auth.currentUser;
+  if(!user){msg2.textContent='Please login first';return;}
+  try{await addDoc(collection(db,'messages'),{text,name:user.displayName||user.email,uid:user.uid,createdAt:serverTimestamp()});input.value='';msg2.textContent='';}catch(e){msg2.textContent='Could not send: '+e.message;}
 }
-document.getElementById('toggleBtn').onclick = () => {
-  isSignup = !isSignup;
-  document.getElementById('authTitle').textContent = isSignup ? 'Create Account' : 'Welcome back';
-  document.getElementById('authSub').textContent = isSignup ? 'Create account with email to join.' : 'Login with your email to continue.';
-  document.getElementById('nameInput').style.display = isSignup ? 'block' : 'none';
-  document.getElementById('mainBtn').textContent = isSignup ? 'Create Account' : 'Login';
-  document.getElementById('toggleBtn').textContent = isSignup ? 'Already have account? Login' : "Don't have account? Create Account";
-  msg.textContent = '';
-};
-  
+if(auth){
+  onAuthStateChanged(auth,(user)=>{
+    const authCard=document.getElementById('authCard');
+    const chatCard=document.getElementById('chatCard');
+    if(user){
+      authCard.classList.add('hidden');chatCard.classList.remove('hidden');
+      document.getElementById('userLabel').textContent='Hi, '+(user.displayName||user.email);
+      startChat();
+    }else{authCard.classList.remove('hidden');chatCard.classList.add('hidden');}
+  });
+}
+let unsub=null;
+function startChat(){
+  if(unsub) return;
+  const q=query(collection(db,'messages'),orderBy('createdAt','asc'));
+  unsub=onSnapshot(q,(snap)=>{
+    const box=document.getElementById('messages');
+    box.innerHTML='';
+    snap.forEach(doc=>{
+      const d=doc.data();
+      const div=document.createElement('div');
+      const me=auth.currentUser&&d.uid===auth.currentUser.uid;
+      div.className='msg '+(me?'me':'other');
+      div.innerHTML=`<small>${d.name||'User'}</small>${d.text||''}`;
+      box.appendChild(div);
+    });
+    box.scrollTop=box.scrollHeight;
+  });
+}
+</script>
+</body>
+</html>
