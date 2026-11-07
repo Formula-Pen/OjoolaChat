@@ -1,399 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OjoolaChat - FINAL CHECKED</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh;background:linear-gradient(180deg,#1e40af,#3b82f6 35%,#818cf8 70%,#a78bfa);display:flex;justify-content:center}
-body.dark{background:#0b1220}
-.app{width:100%;max-width:430px;min-height:100dvh;position:relative;padding:14px;display:flex;flex-direction:column}
-.bg-hearts{position:fixed;inset:0;pointer-events:none;font-size:30px}
-.bg-hearts span{position:absolute;opacity:.5}
-.glass{background:rgba(255,255,255,.88);backdrop-filter:blur(16px);border-radius:28px;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.25);flex:1;display:flex;flex-direction:column}
-body.dark .glass{background:rgba(17,28,51,.95);color:#fff}
-.logo-row{display:flex;align-items:center;gap:8px;justify-content:center}
-.logo-row h1{font-size:32px;color:#1e40af}
-body.dark .logo-row h1{color:#fff}
-.logo-icon{width:44px;height:44px;background:#dbeafe;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px}
-h2.welcome{font-size:32px;color:#1e40af;text-align:center;margin-top:14px}
-body.dark h2.welcome{color:#fff}
-.sub{text-align:center;color:#334155;font-size:14px;margin:6px 0 20px}
-body.dark .sub{color:#cbd5e1}
-label{font-size:13px;color:#334155;margin:10px 0 6px;display:block}
-body.dark label{color:#cbd5e1}
-.field{display:flex;align-items:center;gap:10px;background:#eef2ff;border:1px solid #dbeafe;border-radius:14px;padding:13px}
-body.dark .field{background:#1e293b;border-color:#334155}
-.field input{border:none;outline:none;background:transparent;flex:1;font-size:15px}
-body.dark .field input{color:#fff}
-.eye{border:none;background:none;font-size:18px;cursor:pointer}
-.btn{width:100%;padding:15px;border:none;border-radius:14px;font-size:19px;font-weight:800;cursor:pointer}
-.btn-login{background:linear-gradient(90deg,#2563eb,#38bdf8);color:#fff;margin-top:18px}
-.btn-google{background:#fff;border:1px solid #e2e8f0;display:flex;align-items:center;justify-content:center;gap:10px;font-size:16px;font-weight:600;color:#111;margin-top:12px}
-body.dark .btn-google{background:#1e293b;color:#fff;border-color:#334155}
-.link{text-align:center;margin-top:16px;font-size:14px}
-.link b{color:#1e40af;cursor:pointer;text-decoration:underline}
-#msg{text-align:center;font-size:13px;font-weight:600;margin-top:10px;min-height:18px;color:#dc2626}
-.footer{text-align:center;color:#fff;font-size:11px;margin-top:12px;opacity:.9}
-.chats-head{display:flex;justify-content:space-between;align-items:center}
-.chats-head h1{font-size:26px;color:#1e40af;display:flex;align-items:center;gap:8px}
-body.dark .chats-head h1{color:#fff}
-.search-btn{width:40px;height:40px;border:none;background:#eef2ff;border-radius:50%;font-size:18px;cursor:pointer}
-.top-ava{width:40px;height:40px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;overflow:hidden;cursor:pointer;border:2px solid #fff}
-.top-ava img{width:100%;height:100%;object-fit:cover}
-.chats-title{font-size:24px;font-weight:800;color:#1e3a8a;margin:14px 0 10px}
-body.dark .chats-title{color:#fff}
-.chat-row{display:flex;gap:12px;padding:12px;background:rgba(255,255,255,.75);border-radius:18px;margin-bottom:10px;cursor:pointer;align-items:center}
-body.dark .chat-row{background:rgba(30,41,59,.75)}
-.chat-row:active{transform:scale(.98)}
-.ava{width:52px;height:52px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;overflow:hidden;flex-shrink:0;position:relative}
-.ava img{width:100%;height:100%;object-fit:cover}
-.ava.lg{width:92px;height:92px;font-size:36px}
-.dot{position:absolute;bottom:2px;right:2px;width:12px;height:12px;background:#22c55e;border:2px solid #fff;border-radius:50%}
-.chat-row b{font-size:17px}
-.chat-row p{font-size:13px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}
-body.dark .chat-row p{color:#94a3b8}
-.time{font-size:12px;color:#64748b;white-space:nowrap}
-.badge{background:#2563eb;color:#fff;font-size:12px;font-weight:800;min-width:22px;height:22px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:0 6px;float:right;margin-top:4px}
-.plus{margin-top:auto;align-self:flex-end;width:62px;height:52px;border:none;border-radius:18px;background:linear-gradient(90deg,#2563eb,#38bdf8);color:#fff;font-size:28px;cursor:pointer;box-shadow:0 8px 20px rgba(37,99,235,.4)}
-.chat-head{display:flex;align-items:center;gap:10px;padding-bottom:12px}
-.back{width:38px;height:38px;border:none;background:#eef2ff;border-radius:50%;font-size:18px;cursor:pointer;flex-shrink:0}
-.chat-head b{font-size:19px;color:#1e3a8a}
-body.dark .chat-head b{color:#fff}
-.chat-head small{color:#16a34a;font-size:13px}
-.icon-btn{width:36px;height:36px;border:none;background:#eef2ff;border-radius:50%;font-size:16px;cursor:pointer}
-.msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:16px}
-.msg{max-width:80%;padding:10px 12px 7px;border-radius:16px;font-size:15px;line-height:1.4;word-break:break-word}
-.msg.other{align-self:flex-start;background:#fff;border-bottom-left-radius:4px;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.msg.me{align-self:flex-end;background:linear-gradient(135deg,#2563eb,#3b82f6);color:#fff;border-bottom-right-radius:4px}
-body.dark .msg.other{background:#1e293b;color:#fff}
-.msg-time{font-size:11px;opacity:.7;text-align:right;margin-top:4px}
-.input-row{display:flex;gap:8px;margin-top:12px;background:rgba(255,255,255,.9);border-radius:999px;padding:6px 6px 6px 12px;align-items:center}
-body.dark .input-row{background:#1e293b}
-.input-row input{flex:1;border:none;outline:none;background:transparent;font-size:15px}
-body.dark .input-row input{color:#fff}
-.attach{border:none;background:none;font-size:22px;cursor:pointer}
-.send{width:42px;height:42px;border:none;border-radius:50%;background:linear-gradient(135deg,#2563eb,#38bdf8);color:#fff;font-size:18px;cursor:pointer}
-.set-profile{background:#fff;border-radius:20px;padding:20px;text-align:center}
-body.dark .set-profile{background:#1e293b}
-.set-profile b{font-size:22px;color:#1e3a8a}
-body.dark .set-profile b{color:#fff}
-.set-profile p{color:#475569;font-size:14px;margin:4px 0 8px}
-body.dark .set-profile p{color:#94a3b8}
-.pill{display:inline-block;background:#2563eb;color:#fff;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700}
-.set-list{background:#fff;border-radius:20px;padding:6px 16px;margin-top:14px}
-body.dark .set-list{background:#1e293b}
-.set-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #f1f5f9;cursor:pointer}
-body.dark .set-item{border-color:#334155}
-.set-item:last-child{border:none}
-.set-item b{font-size:15px;font-weight:600}
-.set-item span{font-size:13px;color:#64748b}
-.set-icon{width:36px;height:36px;background:#eef2ff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
-.switch{width:48px;height:28px;background:#2563eb;border-radius:999px;position:relative;cursor:pointer;flex-shrink:0}
-.switch:after{content:"";position:absolute;width:22px;height:22px;background:#fff;border-radius:50%;top:3px;right:3px}
-.switch.off{background:#cbd5e1}
-.switch.off:after{right:auto;left:3px}
-.logout{width:100%;padding:13px;border:1.5px solid #2563eb;background:transparent;color:#1e40af;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;margin-top:14px}
-body.dark .logout{color:#fff;border-color:#fff}
-.file-btn{display:inline-block;background:#2563eb;color:#fff;padding:11px 18px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer;margin-top:10px}
-.remove-btn{display:inline-block;background:#fee2e2;color:#b91c1c;padding:8px 14px;border-radius:999px;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px;margin-left:6px;border:none}
-.hidden{display:none !important}
-.splash{position:fixed;inset:0;background:linear-gradient(180deg,#2563eb,#3b82f6);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;color:#fff;gap:10px}
-.splash .icon{width:110px;height:110px;background:#fff;border-radius:32px;display:flex;align-items:center;justify-content:center;font-size:60px}
-.empty{text-align:center;padding:20px;color:#64748b;font-size:14px;line-height:1.6}
-.pic-status{text-align:center;font-size:13px;font-weight:600;min-height:18px;margin-top:8px}
-.section-label{font-size:11px;font-weight:800;color:#64748b;text-transform:uppercase;margin:12px 0 8px}
-.sub-page{background:#fff;border-radius:20px;padding:18px;margin-top:12px}
-body.dark .sub-page{background:#1e293b}
-.wall-opt{width:52px;height:52px;border-radius:14px;cursor:pointer;border:3px solid transparent;display:inline-block;margin:4px;text-align:center;line-height:52px;font-size:20px}
-.wall-opt.selected{border-color:#2563eb}
-</style>
-</head>
-<body>
-<div class="bg-hearts"><span style="left:8%;top:12%">💙</span><span style="left:88%;top:18%">💙</span><span style="left:85%;top:70%">💙</span><span style="left:5%;top:82%">💙</span></div>
-<div class="splash" id="splash"><div class="icon">💙</div><div style="font-size:32px;font-weight:900">OjoolaChat</div><div>Connect with Family and Friends</div><div id="splashMsg" style="font-size:13px;opacity:.9">Loading...</div></div>
-
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ojoola</title><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:system-ui,sans-serif;min-height:100vh;background:linear-gradient(180deg,#1e40af,#3b82f6,#818cf8);display:flex;justify-content:center}body.dark{background:#0b1220}.app{width:100%;max-width:430px;min-height:100dvh;padding:14px;display:flex;flex-direction:column}.glass{background:rgba(255,255,255,.9);border-radius:28px;padding:20px;box-shadow:0 20px 50px rgba(0,0,0,.25);flex:1;display:flex;flex-direction:column}body.dark .glass{background:#111c33;color:#fff}.logo-row{display:flex;gap:8px;justify-content:center;align-items:center}.logo-row h1{font-size:32px;color:#1e40af}body.dark .logo-row h1{color:#fff}.logo-icon{width:44px;height:44px;background:#dbeafe;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:26px}h2{font-size:32px;color:#1e40af;text-align:center;margin-top:14px}body.dark h2{color:#fff}.sub{text-align:center;color:#334155;font-size:14px;margin:6px 0 14px}body.dark .sub{color:#cbd5e1}label{font-size:13px;color:#334155;margin:10px 0 6px;display:block}body.dark label{color:#cbd5e1}.field{display:flex;gap:10px;background:#eef2ff;border-radius:14px;padding:13px}body.dark .field{background:#1e293b}.field input{border:none;outline:none;background:transparent;flex:1;font-size:15px}body.dark .field input{color:#fff}.eye{border:none;background:none;font-size:18px;cursor:pointer}.btn{width:100%;padding:15px;border:none;border-radius:14px;font-size:18px;font-weight:800;cursor:pointer}.btn-login{background:linear-gradient(90deg,#2563eb,#38bdf8);color:#fff;margin-top:16px}.btn-google{background:#fff;border:1px solid #e2e8f0;display:flex;justify-content:center;gap:10px;font-size:15px;font-weight:600;margin-top:12px}body.dark .btn-google{background:#1e293b;color:#fff}.link{text-align:center;margin-top:14px;font-size:14px}.link b{color:#1e40af;cursor:pointer;text-decoration:underline}#msg{text-align:center;font-size:13px;font-weight:600;margin-top:10px;min-height:18px;color:#dc2626}.tabs{display:flex;background:#eef2ff;border-radius:14px;padding:4px;margin:12px 0}body.dark .tabs{background:#1e293b}.tab{flex:1;padding:11px;border:none;border-radius:10px;font-weight:800;cursor:pointer;background:transparent;color:#475569}body.dark .tab{color:#cbd5e1}.tab.active{background:#fff;color:#1e40af}body.dark .tab.active{background:#2563eb;color:#fff}.divider{text-align:center;color:#94a3b8;font-size:12px;font-weight:700;margin:14px 0 2px}.head{display:flex;justify-content:space-between;align-items:center}.head h1{font-size:26px;color:#1e40af;display:flex;gap:8px}body.dark .head h1{color:#fff}.top-ava{width:40px;height:40px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;overflow:hidden;cursor:pointer}.top-ava img,.ava img{width:100%;height:100%;object-fit:cover}.chats-title{font-size:24px;font-weight:800;color:#1e3a8a;margin:14px 0 10px}.row{display:flex;gap:12px;padding:12px;background:rgba(255,255,255,.75);border-radius:18px;margin-bottom:10px;cursor:pointer;align-items:center}body.dark .row{background:rgba(30,41,59,.75)}.ava{width:52px;height:52px;border-radius:50%;background:#2563eb;color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;overflow:hidden;flex-shrink:0;position:relative}.ava.lg{width:92px;height:92px;font-size:36px}.dot{position:absolute;bottom:2px;right:2px;width:12px;height:12px;background:#22c55e;border:2px solid #fff;border-radius:50%}.row b{font-size:17px}.row p{font-size:13px;color:#475569;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:200px}.plus{margin-top:auto;align-self:flex-end;width:62px;height:52px;border:none;border-radius:18px;background:linear-gradient(90deg,#2563eb,#38bdf8);color:#fff;font-size:28px;cursor:pointer}.chat-head{display:flex;align-items:center;gap:10px;padding-bottom:12px}.back{width:38px;height:38px;border:none;background:#eef2ff;border-radius:50%;font-size:18px;cursor:pointer}.chat-head b{font-size:19px}.icon-btn{width:36px;height:36px;border:none;background:#eef2ff;border-radius:50%;font-size:16px;cursor:pointer}.msgs{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:10px;border-radius:16px}.msg{max-width:80%;padding:10px 12px 7px;border-radius:16px;font-size:15px;word-break:break-word}.msg.other{align-self:flex-start;background:#fff;border-bottom-left-radius:4px}body.dark .msg.other{background:#1e293b}.msg.me{align-self:flex-end;background:#2563eb;color:#fff;border-bottom-right-radius:4px}.msg-time{font-size:11px;opacity:.7;text-align:right;margin-top:4px}.input-row{display:flex;gap:8px;margin-top:12px;background:#fff;border-radius:999px;padding:6px 6px 6px 12px;align-items:center}body.dark .input-row{background:#1e293b}.input-row input{flex:1;border:none;outline:none;background:transparent;font-size:15px}body.dark .input-row input{color:#fff}.send{width:42px;height:42px;border:none;border-radius:50%;background:#2563eb;color:#fff;font-size:18px;cursor:pointer}.set-profile{background:#fff;border-radius:20px;padding:20px;text-align:center}body.dark .set-profile{background:#1e293b}.pill{display:inline-block;background:#2563eb;color:#fff;padding:6px 12px;border-radius:999px;font-size:12px;font-weight:700}.set-list{background:#fff;border-radius:20px;padding:6px 16px;margin-top:14px}body.dark .set-list{background:#1e293b}.set-item{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid #f1f5f9;cursor:pointer}body.dark .set-item{border-color:#334155}.set-item:last-child{border:none}.set-icon{width:36px;height:36px;background:#eef2ff;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}.switch{width:48px;height:28px;background:#2563eb;border-radius:999px;position:relative;cursor:pointer;flex-shrink:0}.switch:after{content:"";position:absolute;width:22px;height:22px;background:#fff;border-radius:50%;top:3px;right:3px}.switch.off{background:#cbd5e1}.switch.off:after{right:auto;left:3px}.logout{width:100%;padding:13px;border:1.5px solid #2563eb;background:transparent;color:#1e40af;border-radius:14px;font-size:17px;font-weight:800;cursor:pointer;margin-top:14px}body.dark .logout{color:#fff;border-color:#fff}.file-btn{display:inline-block;background:#2563eb;color:#fff;padding:11px 18px;border-radius:999px;font-size:13px;font-weight:800;cursor:pointer;margin-top:10px}.hidden{display:none!important}.splash{position:fixed;inset:0;background:linear-gradient(180deg,#2563eb,#3b82f6);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;color:#fff;gap:10px}.splash .icon{width:110px;height:110px;background:#fff;border-radius:32px;display:flex;align-items:center;justify-content:center;font-size:60px}.empty{text-align:center;padding:20px;color:#64748b;font-size:14px}.section-label{font-size:11px;font-weight:800;color:#64748b;text-transform:uppercase;margin:12px 0 8px}.sub-page{background:#fff;border-radius:20px;padding:18px;margin-top:12px}body.dark .sub-page{background:#1e293b}.wall-opt{width:52px;height:52px;border-radius:14px;cursor:pointer;border:3px solid transparent;display:inline-block;margin:4px;text-align:center;line-height:52px;font-size:20px}.wall-opt.selected{border-color:#2563eb}.footer{text-align:center;color:#fff;font-size:11px;margin-top:12px;opacity:.9}</style></head><body>
+<div class="splash" id="splash"><div class="icon">💙</div><div style="font-size:38px;font-weight:900">Ojoola</div><div>Connect with Family and Friends</div><div style="font-size:13px">Loading...</div></div>
 <div class="app">
-<div class="glass" id="authScreen">
-<div class="logo-row"><div class="logo-icon">💬</div><h1>OjoolaChat</h1></div>
-<h2 class="welcome" id="authTitle">Welcome back!</h2>
-<p class="sub" id="authSub">Sign in to continue chatting with friends</p>
-<div id="nameWrap" class="hidden"><label>Your Name</label><div class="field"><span>👤</span><input id="nameInput" placeholder="e.g. Emmanuel"></div></div>
-<label>Email</label><div class="field"><span>✉️</span><input id="emailInput" type="email" placeholder="Email address"></div>
-<label>Password</label><div class="field"><span>🔒</span><input id="passInput" type="password" placeholder="••••••••••"><button class="eye" id="eyeBtn" type="button">👁️</button></div>
-<button class="btn btn-login" id="mainBtn">Login</button>
-<button class="btn btn-google" id="googleBtn" type="button"><span style="font-size:22px;font-weight:900"><span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span></span> Continue with Google</button>
-<div class="link">Don't have an account?<br><b id="toggleBtn">Sign up</b></div>
-<div id="msg"></div>
-<div style="text-align:center;font-size:11px;color:#94a3b8;margin-top:8px">Version FINAL CHECKED ✅ - All buttons working</div>
-</div>
-
-<div class="glass hidden" id="listScreen">
-<div class="chats-head"><div class="logo-row" style="justify-content:flex-start"><div class="logo-icon" style="width:38px;height:38px;font-size:20px">💬</div><h1 style="font-size:26px">OjoolaChat</h1></div><div style="display:flex;gap:8px;align-items:center"><div class="top-ava" id="myAvatarTop">E</div><button class="search-btn" id="searchBtn" type="button">🔍</button></div></div>
-<div class="chats-title">Chats</div>
-<div id="chatList" style="flex:1;overflow-y:auto"></div>
-<button class="plus" id="plusBtn" type="button">+</button>
-</div>
-
-<div class="glass hidden" id="newChatScreen">
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><button class="back" id="backNewChat" type="button">←</button><h1 style="font-size:24px;color:#1e3a8a">New Chat</h1></div>
-<p style="font-size:13px;color:#64748b;line-height:1.5">Add person by name to start 1-on-1 private chat.</p>
-<label>Person Name (e.g. Mum, David, Joy)</label><div class="field"><span>👤</span><input id="newNameInput" placeholder="e.g. Mum"></div>
-<label>Person Email (optional)</label><div class="field"><span>✉️</span><input id="newEmailInput" placeholder="mum@gmail.com"></div>
-<button class="btn btn-login" id="addContactBtn" type="button" style="font-size:16px">+ Add & Chat Privately 💙</button>
-<div id="addMsg" style="text-align:center;font-size:13px;font-weight:600;min-height:18px;margin-top:8px;color:#16a34a"></div>
-<div class="section-label">People who already created account — Tap to chat</div>
-<div id="realUsersList" style="flex:1;overflow-y:auto"></div>
-</div>
-
-<div class="glass hidden" id="chatScreen">
-<div class="chat-head">
-<button class="back" id="backBtn" type="button">←</button>
-<div class="ava" id="chatAvatar">👨‍👩‍👧<span class="dot"></span></div>
-<div style="flex:1"><b id="chatTitle">Family Crew</b><br><small>● Online</small></div>
-<button class="icon-btn" id="callBtn" type="button">📞</button><button class="icon-btn" id="videoBtn" type="button">📹</button><button class="icon-btn" id="chatMenuBtn" type="button">⋮</button>
-</div>
-<div class="msgs" id="messages"></div>
-<div class="input-row"><button class="attach" id="attachBtn" type="button">📎</button><input id="textInput" placeholder="Type a message..."><button class="send" id="sendBtn" type="button">➤</button></div>
-<div id="msg2" style="text-align:center;font-size:13px;color:#dc2626;min-height:16px"></div>
-</div>
-
-<div class="glass hidden" id="settingsScreen">
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><button class="back" id="backSettings" type="button">←</button><h1 style="font-size:28px;color:#1e3a8a">Settings</h1></div>
-<div class="set-profile">
-<div class="ava lg" id="settingsAvatar" style="margin:0 auto">E<span class="dot"></span></div>
-<div style="margin-top:10px"><b id="settingsName">Emmanuel</b><p id="settingsEmail">emmanuel@gmail.com</p><span class="pill">Love and Family ❤️</span></div>
-<label for="picInput" class="file-btn" id="picLabel">📸 Add My Profile Picture</label>
-<input type="file" id="picInput" accept="image/*" style="display:none">
-<button class="remove-btn" id="removePicBtn" type="button">Remove Picture</button>
-<div class="pic-status" id="picStatus"></div>
-<div style="font-size:12px;color:#64748b;margin-top:6px;line-height:1.5">Tap Add My Profile Picture → pick from Gallery → e go show everywhere.</div>
-</div>
-<div class="set-list">
-<div class="set-item" id="darkRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">🌙</div><div><b>Dark Mode</b><br><span>Dark Mode</span></div></div><div class="switch" id="darkSwitch"></div></div>
-<div class="set-item" id="notifRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">🔔</div><div><b>Notifications</b><br><span id="notifStatus">ON - You go get alerts</span></div></div><span>›</span></div>
-<div class="set-item" id="privacyRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">🛡️</div><div><b>Privacy and Security</b><br><span id="privacyStatus">Read receipts ON</span></div></div><span>›</span></div>
-<div class="set-item" id="wallpaperRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">🎨</div><div><b>Chat Wallpaper</b><br><span id="wallpaperStatus">Blue Hearts 💙</span></div></div><span>›</span></div>
-<div class="set-item" id="helpRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">❓</div><div><b>Help</b><br><span>FAQ, How to use, Contact us</span></div></div><span>›</span></div>
-</div>
-<button class="logout" id="logoutBtn" type="button">📞 Log Out</button>
-<div id="settingsMsg" style="text-align:center;font-size:13px;color:#16a34a;margin-top:8px"></div>
-</div>
-
-<div class="glass hidden" id="notifScreen">
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><button class="back" id="backNotif" type="button">←</button><h1 style="font-size:24px;color:#1e3a8a">Notifications</h1></div>
-<div class="sub-page">
-<div class="set-item"><div><b>Message Notifications</b><br><span>Alert when new message enter</span></div><div class="switch" id="msgNotifSwitch"></div></div>
-<div class="set-item"><div><b>Group Notifications</b><br><span>Family Crew alerts</span></div><div class="switch" id="groupNotifSwitch"></div></div>
-<div class="set-item"><div><b>Sound</b><br><span>Play sound for new message</span></div><div class="switch" id="soundSwitch"></div></div>
-<div class="set-item"><div><b>Vibrate</b><br><span>Vibrate on new message</span></div><div class="switch" id="vibrateSwitch"></div></div>
-</div>
-<div style="background:#eff6ff;border-radius:14px;padding:12px;font-size:13px;color:#1e40af;margin-top:12px;line-height:1.5">✅ Saved automatically. Tap any toggle to ON/OFF.</div>
-<button class="btn btn-login" id="notifDoneBtn" type="button" style="margin-top:12px;font-size:15px">Done ✓</button>
-</div>
-
-<div class="glass hidden" id="privacyScreen">
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><button class="back" id="backPrivacy" type="button">←</button><h1 style="font-size:24px;color:#1e3a8a">Privacy & Security</h1></div>
-<div class="sub-page">
-<div class="set-item"><div><b>Read Receipts (✓✓ Blue)</b><br><span>Show when you don read message</span></div><div class="switch" id="readSwitch"></div></div>
-<div class="set-item"><div><b>Show Online Status</b><br><span>Let others see you are Online</span></div><div class="switch" id="onlineSwitch"></div></div>
-<div class="set-item"><div><b>Show Profile Picture</b><br><span>Let others see your picture</span></div><div class="switch" id="picPrivacySwitch"></div></div>
-</div>
-<div style="background:#fef3c7;border-radius:14px;padding:12px;font-size:13px;color:#92400e;margin-top:12px;line-height:1.5">🛡️ Your chats are private. Only you and person you chat with go see your messages.</div>
-<button class="btn btn-login" id="privacyDoneBtn" type="button" style="margin-top:12px;font-size:15px">Done ✓</button>
-</div>
-
-<div class="glass hidden" id="wallpaperScreen">
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><button class="back" id="backWallpaper" type="button">←</button><h1 style="font-size:24px;color:#1e3a8a">Chat Wallpaper</h1></div>
-<p style="font-size:13px;color:#64748b">Tap any wallpaper, e go change for chat screen immediately 💙</p>
-<div class="sub-page" style="text-align:center">
-<div class="wall-opt selected" data-wall="blue" style="background:#eaf3ff">💙</div>
-<div class="wall-opt" data-wall="green" style="background:#dcfce7">💚</div>
-<div class="wall-opt" data-wall="pink" style="background:#fce7f3">💖</div>
-<div class="wall-opt" data-wall="purple" style="background:#ede9fe">💜</div>
-<div class="wall-opt" data-wall="dark" style="background:#0f172a;color:#fff">🌙</div>
-<div class="wall-opt" data-wall="white" style="background:#fff;border:1px solid #e2e8f0">🤍</div>
-<div id="wallMsg" style="text-align:center;font-size:13px;color:#16a34a;margin-top:10px;font-weight:600"></div>
-</div>
-<button class="btn btn-login" id="wallDoneBtn" type="button" style="margin-top:12px;font-size:15px">Done ✓</button>
-</div>
-
-<div class="glass hidden" id="helpScreen">
-<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px"><button class="back" id="backHelp" type="button">←</button><h1 style="font-size:24px;color:#1e3a8a">Help</h1></div>
-<div class="sub-page">
-<b style="font-size:16px">How to use OjoolaChat 💙</b><br><br>
-<div style="font-size:14px;line-height:1.7;color:#334155">
-<b>1. Add Individual Chat:</b><br>Tap <b>+</b> for Chats → Type name (Mum, David) → Add & Chat Privately<br><br>
-<b>2. Add Profile Picture:</b><br>Settings → Add My Profile Picture → Pick from Gallery<br><br>
-<b>3. Group Chat:</b><br>Tap <b>Family Crew</b> — everybody go see message<br><br>
-<b>4. Private Chat:</b><br>Tap any person — only both of una go see am<br><br>
-<b>5. Dark Mode:</b><br>Settings → Dark Mode toggle<br><br>
-<b>6. If chat no dey open:</b><br>Use Incognito, or clear cache, or wait 1 min after commit
-</div>
-</div>
-<div class="sub-page" style="margin-top:12px">
-<b>Contact Us</b><br>
-<span style="font-size:13px;color:#64748b;line-height:1.6">Email: emmanuelnas02@gmail.com<br>Made for Family and Friends • Safe • Secure • Fast 💙</span><br>
-<button class="btn btn-login" id="helpContactBtn" type="button" style="margin-top:12px;font-size:15px">📧 Email Us For Help</button>
-</div>
-<div id="helpMsg" style="text-align:center;font-size:13px;color:#16a34a;margin-top:10px"></div>
-</div>
-
-<div class="footer">Made for Family and Friends • Safe • Secure • Fast</div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script>
-(function(){
-var splashMsg=document.getElementById("splashMsg");
-setTimeout(function(){ var s=document.getElementById("splash"); if(s) s.style.display="none"; }, 1200);
-var firebaseConfig={ apiKey:"AIzaSyBXU6HnCTOAabLEyc3NANNLgZi3OJYpGVk", authDomain:"ojoolachat.firebaseapp.com", projectId:"ojoolachat", storageBucket:"ojoolachat.firebasestorage.app", messagingSenderId:"30543009981", appId:"1:30543009981:web:10c2641baa64864f96ffd4" };
-var msgEl=document.getElementById("msg");
-function showMsg(t,ok){ if(!msgEl) return; msgEl.textContent=t; msgEl.style.color=ok?"#16a34a":"#dc2626"; }
-var isSignup=false, auth=null, db=null, currentChat="Family Crew", currentChatId="family_crew", realUsers=[], myContacts=[], allMessages=[], myPic="", myName="User";
-try{ firebase.initializeApp(firebaseConfig); auth=firebase.auth(); db=firebase.firestore(); showMsg("Ready 💙",true); if(splashMsg) splashMsg.textContent="Ready 💙"; }catch(e){ showMsg("Error: "+e.message,false); if(splashMsg) splashMsg.textContent="Error: "+e.message; }
-function el(id){ return document.getElementById(id); }
-var authTitle=el("authTitle"), authSub=el("authSub"), nameWrap=el("nameWrap"), nameInput=el("nameInput"), emailInput=el("emailInput"), passInput=el("passInput"), mainBtn=el("mainBtn"), toggleBtn=el("toggleBtn"), eyeBtn=el("eyeBtn");
-if(eyeBtn) eyeBtn.onclick=function(){ if(passInput.type==="password"){passInput.type="text"; eyeBtn.textContent="🙈";} else {passInput.type="password"; eyeBtn.textContent="👁️";} };
-if(toggleBtn) toggleBtn.onclick=function(){ isSignup=!isSignup; if(isSignup){authTitle.textContent="Create account"; authSub.textContent="Create account to start chatting"; mainBtn.textContent="Create Account"; toggleBtn.textContent="Login"; nameWrap.classList.remove("hidden");} else {authTitle.textContent="Welcome back!"; authSub.textContent="Sign in to continue chatting with friends"; mainBtn.textContent="Login"; toggleBtn.textContent="Sign up"; nameWrap.classList.add("hidden");} };
-function saveUser(user,name,photo){ if(!db) return Promise.resolve(); return db.collection("users").doc(user.uid).set({name:name||user.displayName||user.email,email:user.email,uid:user.uid,photo:photo!==undefined?photo:(localStorage.getItem("ojoola_pic")||""),createdAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true}); }
-if(mainBtn) mainBtn.onclick=function(){
-  var email=emailInput.value.trim(), pass=passInput.value, name=nameInput.value.trim();
-  if(!email||!pass){showMsg("Please enter email and password",false);return;}
-  if(pass.length<8){showMsg("Password must be at least 8 characters",false);return;}
-  if(isSignup && !name){showMsg("Please enter your name",false);return;}
-  mainBtn.disabled=true; mainBtn.textContent="Please wait...";
-  if(isSignup){ auth.createUserWithEmailAndPassword(email,pass).then(function(cred){ var p=name?cred.user.updateProfile({displayName:name}):Promise.resolve(); return p.then(function(){ return saveUser(cred.user,name); }); }).then(function(){ showMsg("Account created! Welcome 💙",true); mainBtn.disabled=false; mainBtn.textContent="Create Account"; }).catch(function(e){ showMsg(e.message,false); mainBtn.disabled=false; mainBtn.textContent="Create Account"; }); }
-  else { auth.signInWithEmailAndPassword(email,pass).then(function(cred){ return saveUser(cred.user,cred.user.displayName); }).then(function(){ showMsg("Login successful! 💙",true); mainBtn.disabled=false; mainBtn.textContent="Login"; }).catch(function(e){ showMsg(e.message,false); mainBtn.disabled=false; mainBtn.textContent="Login"; }); }
-};
-var googleBtn=el("googleBtn");
-if(googleBtn) googleBtn.onclick=function(){ var provider=new firebase.auth.GoogleAuthProvider(); auth.signInWithPopup(provider).then(function(res){ return saveUser(res.user,res.user.displayName); }).then(function(){ showMsg("Google login successful 💙",true); }).catch(function(e){ showMsg("Google: "+e.message,false); }); };
-var ALL=["authScreen","listScreen","newChatScreen","chatScreen","settingsScreen","notifScreen","privacyScreen","wallpaperScreen","helpScreen"];
-function showScreen(id){ ALL.forEach(function(x){ var n=el(x); if(n) n.classList.add("hidden"); }); var t=el(id); if(t) t.classList.remove("hidden"); }
-function goList(){ showScreen("listScreen"); renderList(); }
-if(el("backBtn")) el("backBtn").onclick=goList;
-if(el("backSettings")) el("backSettings").onclick=goList;
-if(el("backNewChat")) el("backNewChat").onclick=goList;
-if(el("backNotif")) el("backNotif").onclick=function(){ showScreen("settingsScreen"); };
-if(el("backPrivacy")) el("backPrivacy").onclick=function(){ showScreen("settingsScreen"); };
-if(el("backWallpaper")) el("backWallpaper").onclick=function(){ showScreen("settingsScreen"); };
-if(el("backHelp")) el("backHelp").onclick=function(){ showScreen("settingsScreen"); };
-if(el("notifDoneBtn")) el("notifDoneBtn").onclick=function(){ showScreen("settingsScreen"); };
-if(el("privacyDoneBtn")) el("privacyDoneBtn").onclick=function(){ showScreen("settingsScreen"); };
-if(el("wallDoneBtn")) el("wallDoneBtn").onclick=function(){ showScreen("settingsScreen"); };
-if(el("chatMenuBtn")) el("chatMenuBtn").onclick=function(){ showScreen("settingsScreen"); };
-if(el("plusBtn")) el("plusBtn").onclick=function(){ showScreen("newChatScreen"); renderNewChatList(); };
-if(el("searchBtn")) el("searchBtn").onclick=function(){ var q=prompt("Search chat name:"); if(!q) return; document.querySelectorAll(".chat-row").forEach(function(r){ r.style.display = r.textContent.toLowerCase().includes(q.toLowerCase()) ? "flex":"none"; }); };
-if(el("logoutBtn")) el("logoutBtn").onclick=function(){ if(auth) auth.signOut(); };
-if(el("myAvatarTop")) el("myAvatarTop").onclick=function(){ showScreen("settingsScreen"); };
-if(el("sendBtn")) el("sendBtn").onclick=sendMsg;
-if(el("textInput")) el("textInput").onkeydown=function(e){ if(e.key==="Enter") sendMsg(); };
-if(el("callBtn")) el("callBtn").onclick=function(){ alert("📞 Calling "+currentChat+"... (Voice call coming soon)"); };
-if(el("videoBtn")) el("videoBtn").onclick=function(){ alert("📹 Video call with "+currentChat+"... (Video call coming soon)"); };
-if(el("attachBtn")) el("attachBtn").onclick=function(){ alert("📎 Attach coming soon - you fit send text + picture profile for now 💙"); };
-if(el("notifRow")) el("notifRow").onclick=function(){ showScreen("notifScreen"); };
-if(el("privacyRow")) el("privacyRow").onclick=function(){ showScreen("privacyScreen"); };
-if(el("wallpaperRow")) el("wallpaperRow").onclick=function(){ showScreen("wallpaperScreen"); };
-if(el("helpRow")) el("helpRow").onclick=function(){ showScreen("helpScreen"); };
-if(el("helpContactBtn")) el("helpContactBtn").onclick=function(){ el("helpMsg").textContent="Opening your email app... 💙"; window.location.href="mailto:emmanuelnas02@gmail.com?subject=OjoolaChat Help&body=Hello, I need help with OjoolaChat"; };
-function bindToggle(id, key, def, onChange){
-  var t=el(id); if(!t) return function(){ return true; };
-  var val=localStorage.getItem(key); if(val===null) val=def?"1":"0";
-  function render(){ t.classList.toggle("off", val!=="1"); }
-  render();
-  t.onclick=function(e){ if(e) e.stopPropagation(); val = val==="1" ? "0" : "1"; localStorage.setItem(key,val); render(); if(onChange) onChange(val==="1"); };
-  return function(){ return val==="1"; };
-}
-bindToggle("msgNotifSwitch","ojoola_msgNotif",true,function(on){ var s=el("notifStatus"); if(s) s.textContent = on ? "ON - You go get alerts" : "OFF - No alerts"; });
-bindToggle("groupNotifSwitch","ojoola_groupNotif",true);
-bindToggle("soundSwitch","ojoola_sound",true);
-bindToggle("vibrateSwitch","ojoola_vibrate",true);
-bindToggle("readSwitch","ojoola_read",true,function(on){ var s=el("privacyStatus"); if(s) s.textContent = on ? "Read receipts ON" : "Read receipts OFF"; });
-bindToggle("onlineSwitch","ojoola_online",true);
-bindToggle("picPrivacySwitch","ojoola_picPrivacy",true);
-var wallMap={blue:"#eaf3ff",green:"#dcfce7",pink:"#fce7f3",purple:"#ede9fe",dark:"#0f172a",white:"#ffffff"};
-var wallNames={blue:"Blue Hearts 💙",green:"Green 💚",pink:"Pink 💖",purple:"Purple 💜",dark:"Dark 🌙",white:"White 🤍"};
-function applyWallpaper(){ var w=localStorage.getItem("ojoola_wall")||"blue"; var m=el("messages"); if(m) m.style.background=wallMap[w]||wallMap.blue; var s=el("wallpaperStatus"); if(s) s.textContent=wallNames[w]||wallNames.blue; document.querySelectorAll(".wall-opt").forEach(function(o){ o.classList.toggle("selected", o.getAttribute("data-wall")===w); }); }
-document.querySelectorAll(".wall-opt").forEach(function(opt){ opt.onclick=function(){ document.querySelectorAll(".wall-opt").forEach(function(o){ o.classList.remove("selected"); }); opt.classList.add("selected"); var w=opt.getAttribute("data-wall"); localStorage.setItem("ojoola_wall",w); applyWallpaper(); var wm=el("wallMsg"); if(wm) wm.textContent="✅ Wallpaper changed to "+(wallNames[w]||w); }; });
-applyWallpaper();
-var darkSwitch=el("darkSwitch");
-function setDark(on){ document.body.classList.toggle("dark",on); if(darkSwitch) darkSwitch.classList.toggle("off",!on); localStorage.setItem("ojoola_dark", on?"1":"0"); }
-if(darkSwitch) darkSwitch.onclick=function(e){ if(e) e.stopPropagation(); setDark(!document.body.classList.contains("dark")); };
-if(el("darkRow")) el("darkRow").onclick=function(){ setDark(!document.body.classList.contains("dark")); };
-if(localStorage.getItem("ojoola_dark")==="1") setDark(true); else setDark(false);
-var picStatus=el("picStatus"); var picLabel=el("picLabel");
-function setPicStatus(t,ok){ if(!picStatus) return; picStatus.textContent=t; picStatus.style.color=ok?"#16a34a":"#dc2626"; }
-function compressImage(file, cb){ var reader=new FileReader(); reader.onload=function(e){ var img=new Image(); img.onload=function(){ var canvas=document.createElement("canvas"); var max=300; var w=img.width,h=img.height; if(w>h){ if(w>max){ h=h*max/w; w=max; } } else { if(h>max){ w=w*max/h; h=max; } } canvas.width=w; canvas.height=h; canvas.getContext("2d").drawImage(img,0,0,w,h); cb(canvas.toDataURL("image/jpeg",0.75)); }; img.onerror=function(){ cb(null); }; img.src=e.target.result; }; reader.readAsDataURL(file); }
-function applyMyPic(){ if(!myPic) return; var top=el("myAvatarTop"); if(top){ top.innerHTML=""; var img1=document.createElement("img"); img1.src=myPic; top.appendChild(img1); } var set=el("settingsAvatar"); if(set){ set.innerHTML=""; var img2=document.createElement("img"); img2.src=myPic; var dot=document.createElement("span"); dot.className="dot"; set.appendChild(img2); set.appendChild(dot); } if(picLabel) picLabel.textContent="📸 Change My Profile Picture"; }
-function clearMyPicUI(){ var initial=(myName||"E").charAt(0).toUpperCase(); var top=el("myAvatarTop"); if(top) top.textContent=initial; var set=el("settingsAvatar"); if(set) set.innerHTML=initial+'<span class="dot"></span>'; if(picLabel) picLabel.textContent="📸 Add My Profile Picture"; }
-if(el("picInput")) el("picInput").onchange=function(e){ var f=e.target.files[0]; if(!f) return; if(!f.type.startsWith("image/")){ setPicStatus("Please pick an image file",false); return; } setPicStatus("Uploading your picture... please wait...",true); compressImage(f,function(data){ if(!data){ setPicStatus("Could not read picture. Try another one.",false); return; } myPic=data; try{localStorage.setItem("ojoola_pic",myPic);}catch(err){} applyMyPic(); if(auth && auth.currentUser && db){ db.collection("users").doc(auth.currentUser.uid).set({photo:myPic},{merge:true}).then(function(){ setPicStatus("✅ Profile picture saved! Everybody go see am now 💙",true); renderList(); }).catch(function(err){ setPicStatus("Saved for phone, Firebase failed: "+err.message,false); }); } e.target.value=""; }); };
-if(el("removePicBtn")) el("removePicBtn").onclick=function(){ myPic=""; try{localStorage.removeItem("ojoola_pic");}catch(e){} clearMyPicUI(); if(auth && auth.currentUser && db){ db.collection("users").doc(auth.currentUser.uid).set({photo:""},{merge:true}); } setPicStatus("Picture removed.",true); };
-function loadMyContacts(){ try{ myContacts=JSON.parse(localStorage.getItem("ojoola_contacts")||"[]"); }catch(e){ myContacts=[]; } }
-function saveMyContacts(){ try{ localStorage.setItem("ojoola_contacts", JSON.stringify(myContacts)); }catch(e){} }
-if(el("addContactBtn")) el("addContactBtn").onclick=function(){
-  var name=el("newNameInput").value.trim(); var email=el("newEmailInput").value.trim();
-  if(!name){ var am=el("addMsg"); am.textContent="Please enter person name (e.g. Mum)"; am.style.color="#dc2626"; return; }
-  loadMyContacts();
-  var existing=myContacts.find(function(c){ return c.name.toLowerCase()===name.toLowerCase(); });
-  if(existing){ el("addMsg").textContent="Opening chat with "+name+"..."; openChat(existing.name, existing.name.charAt(0).toUpperCase(), existing.chatId, existing.photo||""); return; }
-  var chatId="contact_"+Date.now()+"_"+Math.random().toString(36).slice(2,7);
-  var contact={name:name,email:email,chatId:chatId,photo:"",createdAt:Date.now()};
-  myContacts.unshift(contact); saveMyContacts();
-  if(auth && auth.currentUser && db){ db.collection("contacts").add({ownerUid:auth.currentUser.uid,name:name,email:email,chatId:chatId,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).catch(function(){}); }
-  el("newNameInput").value=""; el("newEmailInput").value="";
-  el("addMsg").textContent="✅ "+name+" added! Opening private chat...";
-  setTimeout(function(){ openChat(name, name.charAt(0).toUpperCase(), chatId, ""); }, 500);
-};
-function renderNewChatList(){
-  var box=el("realUsersList"); if(!box) return; box.innerHTML="";
-  if(realUsers.length===0){ var e=document.createElement("div"); e.className="empty"; e.innerHTML="No real account users yet.<br>Add person above to start private chat now 💙"; box.appendChild(e); }
-  else { realUsers.forEach(function(u){ var div=document.createElement("div"); div.className="chat-row"; var initial=(u.name||u.email||"?").charAt(0).toUpperCase(); var ava = u.photo ? '<div class="ava"><img src="'+u.photo+'"><span class="dot"></span></div>' : '<div class="ava">'+initial+'<span class="dot"></span></div>'; div.innerHTML=ava+'<div style="flex:1"><b>'+u.name+'</b><p>'+u.email+'</p></div><span style="color:#2563eb;font-weight:800">Chat ›</span>'; div.onclick=function(){ openChat(u.name, initial, getPrivateId(auth.currentUser.uid,u.uid), u.photo||""); }; box.appendChild(div); }); }
-  loadMyContacts();
-  if(myContacts.length>0){ var label=document.createElement("div"); label.className="section-label"; label.textContent="My Added Contacts"; box.appendChild(label); myContacts.forEach(function(c){ var div=document.createElement("div"); div.className="chat-row"; var initial=c.name.charAt(0).toUpperCase(); div.innerHTML='<div class="ava">'+initial+'<span class="dot"></span></div><div style="flex:1"><b>'+c.name+'</b><p>'+(c.email||"Private chat 💙")+'</p></div><span style="color:#2563eb;font-weight:800">Chat ›</span>'; div.onclick=function(){ openChat(c.name, initial, c.chatId, c.photo||""); }; box.appendChild(div); }); }
-}
-function getPrivateId(a,b){ return "private_"+[a,b].sort().join("_"); }
-function renderList(){
-  loadMyContacts();
-  var list=el("chatList"); if(!list) return; list.innerHTML="";
-  var group=document.createElement("div"); group.className="chat-row";
-  group.innerHTML='<div class="ava">👨‍👩‍👧<span class="dot"></span></div><div style="flex:1"><div style="display:flex;justify-content:space-between"><b>Family Crew</b><span class="time">Yesterday</span></div><p>Dinner plans tonight? ❤️ Let\'s do jollof!</p></div><div style="text-align:right"><div class="badge">5</div></div>';
-  group.onclick=function(){ openChat("Family Crew","👨‍👩‍👧","family_crew",""); };
-  list.appendChild(group);
-  realUsers.forEach(function(u){ var div=document.createElement("div"); div.className="chat-row"; var initial=(u.name||u.email||"?").charAt(0).toUpperCase(); var ava = u.photo ? '<div class="ava"><img src="'+u.photo+'"><span class="dot"></span></div>' : '<div class="ava">'+initial+'<span class="dot"></span></div>'; div.innerHTML=ava+'<div style="flex:1"><div style="display:flex;justify-content:space-between"><b>'+u.name+'</b><span class="time">Today</span></div><p>Tap to chat privately 💙</p></div>'; div.onclick=function(){ openChat(u.name, initial, getPrivateId(auth.currentUser.uid,u.uid), u.photo||""); }; list.appendChild(div); });
-  myContacts.forEach(function(c){ var div=document.createElement("div"); div.className="chat-row"; var initial=c.name.charAt(0).toUpperCase(); var ava = c.photo ? '<div class="ava"><img src="'+c.photo+'"><span class="dot"></span></div>' : '<div class="ava">'+initial+'<span class="dot"></span></div>'; div.innerHTML=ava+'<div style="flex:1"><div style="display:flex;justify-content:space-between"><b>'+c.name+'</b><span class="time">Private</span></div><p>'+(c.email||"Tap to chat privately 💙")+'</p></div>'; div.onclick=function(){ openChat(c.name, initial, c.chatId, c.photo||""); }; list.appendChild(div); });
-  if(realUsers.length===0 && myContacts.length===0){ var empty=document.createElement("div"); empty.className="empty"; empty.innerHTML="No individual chats yet.<br>Tap <b>+</b> below to add Mum, David, Joy, Chike etc<br>and start private chat 💙"; list.appendChild(empty); }
-}
-function openChat(name, emoji, chatId, photo){
-  currentChat=name; currentChatId=chatId;
-  el("chatTitle").textContent=name;
-  if(photo){ el("chatAvatar").innerHTML='<img src="'+photo+'"><span class="dot"></span>'; }
-  else { el("chatAvatar").innerHTML=emoji+'<span class="dot"></span>'; }
-  showScreen("chatScreen"); applyWallpaper(); renderMessages();
-}
-function sendMsg(){
-  var input=el("textInput"); var text=input.value.trim(); if(!text) return;
-  var user=auth.currentUser; if(!user){ el("msg2").textContent="Please login first"; return; }
-  db.collection("messages").add({text:text,name:user.displayName||user.email,uid:user.uid,chatId:currentChatId,chatName:currentChat,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(function(){ input.value=""; el("msg2").textContent=""; }).catch(function(e){ el("msg2").textContent="Could not send: "+e.message; });
-}
-function renderMessages(){
-  var box=el("messages"); if(!box) return; box.innerHTML="";
-  var filtered=allMessages.filter(function(d){ if(d.chatId && d.chatId!==currentChatId) return false; if(!d.chatId && currentChatId!=="family_crew") return false; return true; });
-  if(filtered.length===0){ var empty=document.createElement("div"); empty.style.textAlign="center"; empty.style.color="#64748b"; empty.style.padding="20px"; empty.innerHTML="No messages yet with "+currentChat+".<br>Start chatting 💙"; box.appendChild(empty); return; }
-  filtered.forEach(function(d){ var div=document.createElement("div"); var me=auth.currentUser && d.uid===auth.currentUser.uid; div.className="msg "+(me?"me":"other"); if(!me && currentChatId==="family_crew"){ var small=document.createElement("div"); small.style.fontSize="11px"; small.style.color="#2563eb"; small.style.fontWeight="700"; small.textContent=d.name||""; div.appendChild(small); } var span=document.createElement("span"); span.textContent=d.text||""; div.appendChild(span); var t=document.createElement("div"); t.className="msg-time"; var readOn=localStorage.getItem("ojoola_read")!=="0"; t.textContent = me ? (readOn ? "Now  ✓✓" : "Now  ✓") : "Now"; if(me) t.style.color="#dbeafe"; div.appendChild(t); box.appendChild(div); });
-  box.scrollTop=box.scrollHeight;
-}
-var started=false;
-function startListeners(){
-  if(started) return; started=true;
-  db.collection("users").onSnapshot(function(snap){ var me=auth.currentUser; realUsers=[]; snap.forEach(function(doc){ var d=doc.data(); if(me && d.uid===me.uid){ if(d.photo && !myPic){ myPic=d.photo; try{localStorage.setItem("ojoola_pic",myPic);}catch(e){} applyMyPic(); } return; } realUsers.push(d); }); if(!el("listScreen").classList.contains("hidden")) renderList(); });
-  db.collection("messages").orderBy("createdAt","asc").onSnapshot(function(snap){ allMessages=[]; snap.forEach(function(doc){ allMessages.push(doc.data()); }); if(!el("chatScreen").classList.contains("hidden")) renderMessages(); });
-  if(auth.currentUser){ db.collection("contacts").where("ownerUid","==",auth.currentUser.uid).onSnapshot(function(snap){ var fromFb=[]; snap.forEach(function(doc){ var d=doc.data(); fromFb.push({name:d.name,email:d.email||"",chatId:d.chatId,photo:""}); }); loadMyContacts(); fromFb.forEach(function(fb){ if(!myContacts.find(function(c){ return c.chatId===fb.chatId; })) myContacts.push(fb); }); saveMyContacts(); if(!el("listScreen").classList.contains("hidden")) renderList(); }); }
-}
-if(auth){ auth.onAuthStateChanged(function(user){ if(user){ myName=user.displayName||user.email||"User"; el("settingsName").textContent=myName; el("settingsEmail").textContent=user.email; myPic=localStorage.getItem("ojoola_pic")||""; if(myPic){ applyMyPic(); } else { clearMyPicUI(); } setPicStatus("",true); loadMyContacts(); renderList(); showScreen("listScreen"); startListeners(); } else { showScreen("authScreen"); } }); }
+<div class="glass" id="authScreen"><div class="logo-row"><div class="logo-icon">💬</div><h1>Ojoola</h1></div><h2 id="authTitle">Welcome back!</h2><p class="sub" id="authSub">Sign in to continue chatting</p><div class="tabs"><button class="tab active" id="loginTab">Login</button><button class="tab" id="signupTab">Create New Account</button></div><div id="createChoice" class="hidden" style="background:#eff6ff;border-radius:14px;padding:12px;text-align:center;font-size:13px;color:#1e40af"><b>Create New Account with:</b><br>✉️ Email OR Google — choose one below 💙</div><div id="nameWrap" class="hidden"><label>Your Name</label><div class="field"><span>👤</span><input id="nameInput" placeholder="e.g. Emmanuel"></div></div><div id="usernameWrap" class="hidden"><label>Choose Username — must be unique @</label><div class="field"><span>@</span><input id="usernameInput" placeholder="e.g. emmanuel, mum01"></div><div id="usernameMsg" style="font-size:12px;margin-top:4px;min-height:16px;color:#64748b"></div></div><label>Email</label><div class="field"><span>✉️</span><input id="emailInput" type="email" placeholder="Email address"></div><label>Password</label><div class="field"><span>🔒</span><input id="passInput" type="password" placeholder="••••••••"><button class="eye" id="eyeBtn">👁️</button></div><button class="btn btn-login" id="mainBtn">Login with Email</button><div class="divider">— OR —</div><button class="btn btn-google" id="googleBtn"><span id="googleBtnText">Continue with Google</span></button><div class="link" id="toggleWrap">Don't have an account?<br><b id="toggleBtn">Create New Account</b></div><div id="msg"></div><div style="text-align:center;font-size:11px;color:#94a3b8;margin-top:8px">Version Ojoola ✅ - Create with Email or Google</div></div>
+<div class="glass hidden" id="listScreen"><div class="head"><div class="logo-row"><div class="logo-icon" style="width:38px;height:38px;font-size:20px">💬</div><h1 style="font-size:26px">Ojoola</h1></div><div style="display:flex;gap:8px"><div class="top-ava" id="myAvatarTop">E</div><button class="icon-btn" id="searchBtn">🔍</button></div></div><div class="chats-title">Chats</div><div id="chatList" style="flex:1;overflow-y:auto"></div><button class="plus" id="plusBtn">+</button></div>
+<div class="glass hidden" id="newChatScreen"><div style="display:flex;gap:12px"><button class="back" id="backNewChat">←</button><h1 style="font-size:24px;color:#1e3a8a">New Chat</h1></div><p style="font-size:13px;color:#64748b;margin-top:8px">Add by @username for private chat.</p><label>Person Name</label><div class="field"><span>👤</span><input id="newNameInput" placeholder="e.g. Mum"></div><label>Person @Username</label><div class="field"><span>@</span><input id="newEmailInput" placeholder="@mum01"></div><button class="btn btn-login" id="addContactBtn" style="font-size:16px">+ Add & Chat Privately 💙</button><div id="addMsg" style="text-align:center;font-size:13px;font-weight:600;min-height:18px;margin-top:8px;color:#16a34a"></div><div class="section-label">People who already created account</div><div id="realUsersList" style="flex:1;overflow-y:auto"></div></div>
+<div class="glass hidden" id="chatScreen"><div class="chat-head"><button class="back" id="backBtn">←</button><div class="ava" id="chatAvatar">💙<span class="dot"></span></div><div style="flex:1"><b id="chatTitle">Group Chat</b><br><small style="color:#16a34a">● Online</small></div><button class="icon-btn" id="callBtn">📞</button><button class="icon-btn" id="videoBtn">📹</button><button class="icon-btn" id="chatMenuBtn">⋮</button></div><div class="msgs" id="messages"></div><div class="input-row"><input id="textInput" placeholder="Type a message..."><button class="send" id="sendBtn">➤</button></div><div id="msg2" style="text-align:center;font-size:13px;color:#dc2626;min-height:16px"></div></div>
+<div class="glass hidden" id="profileScreen"><div style="display:flex;gap:12px"><button class="back" id="backProfile">←</button><h1 style="font-size:24px">Profile</h1></div><div class="set-profile" style="margin-top:12px"><div class="ava lg" id="profileAvatar" style="margin:0 auto">E<span class="dot"></span></div><div style="margin-top:10px"><b id="profileName" style="font-size:22px">Mum</b><p id="profileUsername" style="color:#2563eb;font-weight:700">@mum01</p><p id="profileEmail">mum@gmail.com</p><span class="pill">Member of Group Chat 💙</span></div></div><div class="sub-page" style="margin-top:12px"><b>Info</b><br><div style="font-size:14px;line-height:2">Name: <b id="profileInfoName">Mum</b><br>Username: <b id="profileInfoUsername" style="color:#2563eb">@mum01</b></div></div><button class="btn btn-login" id="profileChatBtn">💬 Message Privately</button><button class="btn btn-google" id="profileCopyBtn">📋 Copy @username</button><div id="profileMsg" style="text-align:center;font-size:13px;color:#16a34a;margin-top:8px;min-height:18px"></div></div>
+<div class="glass hidden" id="settingsScreen"><div style="display:flex;gap:12px"><button class="back" id="backSettings">←</button><h1 style="font-size:26px">Settings</h1></div><div class="set-profile" style="margin-top:12px"><div class="ava lg" id="settingsAvatar" style="margin:0 auto">E<span class="dot"></span></div><div style="margin-top:10px"><b id="settingsName">Emmanuel</b><p id="settingsEmail">emmanuel@gmail.com</p><p id="settingsUsername" style="color:#2563eb;font-weight:700">@emmanuel</p><span class="pill">Love and Family ❤️</span></div><label for="picInput" class="file-btn" id="picLabel">📸 Add My Profile Picture</label><input type="file" id="picInput" accept="image/*" style="display:none"><div id="picStatus" style="text-align:center;font-size:13px;margin-top:8px"></div></div><div class="set-list"><div class="set-item" id="darkRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">🌙</div><b>Dark Mode</b></div><div class="switch" id="darkSwitch"></div></div><div class="set-item" id="notifRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">🔔</div><div><b>Notifications</b><br><span id="notifStatus" style="font-size:13px;color:#64748b">ON</span></div></div><span>›</span></div><div class="set-item" id="privacyRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">🛡️</div><div><b>Privacy</b><br><span id="privacyStatus" style="font-size:13px;color:#64748b">Read receipts ON</span></div></div><span>›</span></div><div class="set-item" id="wallpaperRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">🎨</div><div><b>Chat Wallpaper</b><br><span id="wallpaperStatus" style="font-size:13px;color:#64748b">Blue Hearts 💙</span></div></div><span>›</span></div><div class="set-item" id="helpRow"><div style="display:flex;gap:12px;align-items:center"><div class="set-icon">❓</div><b>Help</b></div><span>›</span></div></div><button class="logout" id="logoutBtn">Log Out</button></div>
+<div class="glass hidden" id="notifScreen"><div style="display:flex;gap:12px"><button class="back" id="backNotif">←</button><h1 style="font-size:24px">Notifications</h1></div><div class="sub-page"><div class="set-item"><b>Message Notifications</b><div class="switch" id="msgNotifSwitch"></div></div><div class="set-item"><b>Group Notifications</b><div class="switch" id="groupNotifSwitch"></div></div><div class="set-item"><b>Sound</b><div class="switch" id="soundSwitch"></div></div><div class="set-item"><b>Vibrate</b><div class="switch" id="vibrateSwitch"></div></div></div><button class="btn btn-login" id="testNotifBtn" style="margin-top:12px">🔔 Test Sound + Vibrate Now</button><div id="testNotifMsg" style="text-align:center;font-size:13px;color:#16a34a;margin-top:8px"></div><button class="btn btn-login" id="notifDoneBtn" style="margin-top:12px">Done ✓</button></div>
+<div class="glass hidden" id="privacyScreen"><div style="display:flex;gap:12px"><button class="back" id="backPrivacy">←</button><h1 style="font-size:24px">Privacy</h1></div><div class="sub-page"><div class="set-item"><b>Read Receipts (✓✓)</b><div class="switch" id="readSwitch"></div></div><div class="set-item"><b>Show Online Status</b><div class="switch" id="onlineSwitch"></div></div><div class="set-item"><b>Show Profile Picture</b><div class="switch" id="picPrivacySwitch"></div></div></div><button class="btn btn-login" id="privacyDoneBtn" style="margin-top:12px">Done ✓</button></div>
+<div class="glass hidden" id="wallpaperScreen"><div style="display:flex;gap:12px"><button class="back" id="backWallpaper">←</button><h1 style="font-size:24px">Chat Wallpaper</h1></div><div class="sub-page" style="text-align:center"><div class="wall-opt selected" data-wall="blue" style="background:#eaf3ff">💙</div><div class="wall-opt" data-wall="green" style="background:#dcfce7">💚</div><div class="wall-opt" data-wall="pink" style="background:#fce7f3">💖</div><div class="wall-opt" data-wall="purple" style="background:#ede9fe">💜</div><div class="wall-opt" data-wall="dark" style="background:#0f172a;color:#fff">🌙</div><div class="wall-opt" data-wall="white" style="background:#fff">🤍</div><div id="wallMsg" style="text-align:center;color:#16a34a;margin-top:10px"></div></div><button class="btn btn-login" id="wallDoneBtn" style="margin-top:12px">Done ✓</button></div>
+<div class="glass hidden" id="helpScreen"><div style="display:flex;gap:12px"><button class="back" id="backHelp">←</button><h1 style="font-size:24px">Help</h1></div><div class="sub-page"><b>How to use Ojoola 💙</b><br><br><div style="font-size:14px;line-height:1.7"><b>1. Create New Account:</b> Tap Create New Account → Email OR Google → Name + @username + Email + Password<br><br><b>2. Private Chat:</b> Tap + → Name + @username → Add<br><br><b>3. Group Chat:</b> Tap Group Chat — Tap sender name to view Profile<br><br><b>4. Sound:</b> Settings → Notifications → All ON. Tap Test Sound.</div></div><div class="sub-page" style="margin-top:12px"><b>Contact Us</b><br><span style="font-size:13px">Email: emmanuelnas02@gmail.com</span><br><button class="btn btn-login" id="helpContactBtn" style="margin-top:12px">📧 Email Us</button></div></div>
+<div class="footer">Made for Family and Friends • Safe • Secure • Fast</div></div>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script><script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script><script>
+(function(){var S=document.getElementById("splash");setTimeout(function(){S.style.display="none"},1200);var cfg={apiKey:"AIzaSyBXU6HnCTOAabLEyc3NANNLgZi3OJYpGVk",authDomain:"ojoolachat.firebaseapp.com",projectId:"ojoolachat",storageBucket:"ojoolachat.firebasestorage.app",messagingSenderId:"30543009981",appId:"1:30543009981:web:10c2641baa64864f96ffd4"};var auth=null,db=null,signup=false,cur="Group Chat",curId="group_chat",users=[],contacts=[],msgs=[],myPic="",myName="User",myUser=localStorage.getItem("ojoola_username")||"",lastCount=0,actx=null,started=false,curProfile=null;function el(i){return document.getElementById(i)}function msg(t,ok){var m=el("msg");if(m){m.textContent=t;m.style.color=ok?"#16a34a":"#dc2626"}}function clean(v){return (v||"").toLowerCase().trim().replace("@","").replace(/[^a-z0-9_]/g,"")}function room(a,b){return "private_usernames_"+[clean(a),clean(b)].sort().join("_")}function isOn(k){var v=localStorage.getItem(k);return v===null?true:v==="1"}function beep(){if(!isOn("ojoola_sound")||!isOn("ojoola_msgNotif"))return;try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume();var o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.type="sine";o.frequency.setValueAtTime(880,actx.currentTime);o.frequency.setValueAtTime(660,actx.currentTime+0.12);g.gain.setValueAtTime(.25,actx.currentTime);g.gain.exponentialRampToValueAtTime(.01,actx.currentTime+.35);o.start();o.stop(actx.currentTime+.35)}catch(e){}}function vib(){if(!isOn("ojoola_vibrate")||!isOn("ojoola_msgNotif"))return;try{if(navigator.vibrate)navigator.vibrate([200,100,200])}catch(e){}}function popup(t,b){if(!isOn("ojoola_msgNotif"))return;if(!("Notification" in window))return;if(Notification.permission==="granted"){try{new Notification(t,{body:b})}catch(e){}}}function askPerm(){if("Notification" in window&&Notification.permission==="default"){try{Notification.requestPermission()}catch(e){}}}document.addEventListener("click",function(){askPerm();if(actx&&actx.state==="suspended")actx.resume()});
+try{firebase.initializeApp(cfg);auth=firebase.auth();db=firebase.firestore();msg("Ready 💙",true)}catch(e){msg(e.message,false)}
+function saveUser(u,n,un){return db.collection("users").doc(u.uid).set({name:n||u.displayName||u.email,username:un||"",username_lower:(un||"").toLowerCase(),email:u.email,uid:u.uid,photo:localStorage.getItem("ojoola_pic")||"",createdAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true})}
+function checkTaken(v){return db.collection("users").where("username_lower","==",v).get().then(function(s){var t=false;s.forEach(function(d){if(auth.currentUser&&d.id===auth.currentUser.uid)return;t=true});return t})}
+function setMode(s){signup=s;el("loginTab").classList.toggle("active",!s);el("signupTab").classList.toggle("active",s);el("authTitle").textContent=s?"Create New Account":"Welcome back!";el("authSub").textContent=s?"Create account with Email OR Google":"Sign in to continue chatting";el("mainBtn").textContent=s?"Create Account with Email":"Login with Email";el("googleBtnText").textContent=s?"Create with Google":"Continue with Google";el("nameWrap").classList.toggle("hidden",!s);el("usernameWrap").classList.toggle("hidden",!s);el("createChoice").classList.toggle("hidden",!s);el("toggleWrap").innerHTML=s?'Already have an account?<br><b id="toggleBtn2">Login</b>':'Don\'t have an account?<br><b id="toggleBtn">Create New Account</b>';var b=document.getElementById(s?"toggleBtn2":"toggleBtn");if(b)b.onclick=function(){setMode(!s)}}
+el("loginTab").onclick=function(){setMode(false)};el("signupTab").onclick=function(){setMode(true)};el("toggleBtn").onclick=function(){setMode(true)};
+el("eyeBtn").onclick=function(){var p=el("passInput");p.type=p.type==="password"?"text":"password"};
+el("usernameInput").oninput=function(){var c=clean(el("usernameInput").value);el("usernameInput").value=c;var m=el("usernameMsg");if(c.length<3){m.textContent="At least 3 chars: letters, numbers, _";m.style.color="#64748b";return}m.textContent="Checking @"+c+"...";checkTaken(c).then(function(t){m.textContent=t?"❌ @"+c+" taken":"✅ @"+c+" available!";m.style.color=t?"#dc2626":"#16a34a"})};
+el("mainBtn").onclick=function(){var email=el("emailInput").value.trim(),pass=el("passInput").value,name=el("nameInput").value.trim(),un=clean(el("usernameInput").value);if(!email||!pass){msg("Enter email and password",false);return}if(pass.length<8){msg("Password must be at least 8 characters",false);return}if(signup){if(!name){msg("Enter your name",false);return}if(!un||un.length<3){msg("Choose @username at least 3 chars",false);return}el("mainBtn").disabled=true;el("mainBtn").textContent="Checking @"+un+"...";checkTaken(un).then(function(t){if(t){msg("@"+un+" taken",false);el("mainBtn").disabled=false;el("mainBtn").textContent="Create Account with Email";throw new Error("taken")}return auth.createUserWithEmailAndPassword(email,pass)}).then(function(c){return c.user.updateProfile({displayName:name}).then(function(){return saveUser(c.user,name,un)})}).then(function(){myUser=un;localStorage.setItem("ojoola_username",un);msg("Account created with Email! @"+un+" 💙",true);el("mainBtn").disabled=false;el("mainBtn").textContent="Create Account with Email"}).catch(function(e){if(e.message!=="taken"){msg(e.message,false);el("mainBtn").disabled=false;el("mainBtn").textContent="Create Account with Email"}})}else{el("mainBtn").disabled=true;el("mainBtn").textContent="Please wait...";auth.signInWithEmailAndPassword(email,pass).then(function(c){return db.collection("users").doc(c.user.uid).get().then(function(d){var dd=d.data()||{};myUser=dd.username||dd.username_lower||"";if(myUser)localStorage.setItem("ojoola_username",myUser);return saveUser(c.user,c.user.displayName,myUser)})}).then(function(){msg("Login successful! 💙",true);el("mainBtn").disabled=false;el("mainBtn").textContent="Login with Email"}).catch(function(e){msg(e.message,false);el("mainBtn").disabled=false;el("mainBtn").textContent="Login with Email"})}};
+el("googleBtn").onclick=function(){var p=new firebase.auth.GoogleAuthProvider();auth.signInWithPopup(p).then(function(r){return db.collection("users").doc(r.user.uid).get().then(function(d){var dd=d.data()||{};if(dd.username){myUser=dd.username;localStorage.setItem("ojoola_username",myUser);return saveUser(r.user,r.user.displayName,myUser)}var u=clean(prompt("Choose your unique @username (e.g. emmanuel):")||"");if(!u){msg("You need @username",false);return}return checkTaken(u).then(function(t){if(t){msg("@"+u+" taken",false);return}myUser=u;localStorage.setItem("ojoola_username",u);return saveUser(r.user,r.user.displayName,u)})})}).then(function(){msg("Google successful 💙",true)}).catch(function(e){msg("Google: "+e.message,false)})};
+var ALL=["authScreen","listScreen","newChatScreen","chatScreen","settingsScreen","notifScreen","privacyScreen","wallpaperScreen","helpScreen","profileScreen"];function show(id){ALL.forEach(function(x){el(x).classList.add("hidden")});el(id).classList.remove("hidden")}function goList(){show("listScreen");renderList()}
+el("backBtn").onclick=goList;el("backSettings").onclick=goList;el("backNewChat").onclick=goList;el("backNotif").onclick=function(){show("settingsScreen")};el("backPrivacy").onclick=function(){show("settingsScreen")};el("backWallpaper").onclick=function(){show("settingsScreen")};el("backHelp").onclick=function(){show("settingsScreen")};el("backProfile").onclick=function(){if(curId==="group_chat")show("chatScreen");else goList()};el("notifDoneBtn").onclick=function(){show("settingsScreen")};el("privacyDoneBtn").onclick=function(){show("settingsScreen")};el("wallDoneBtn").onclick=function(){show("settingsScreen")};el("chatMenuBtn").onclick=function(){show("settingsScreen")};el("plusBtn").onclick=function(){show("newChatScreen");renderNew()};el("searchBtn").onclick=function(){var q=prompt("Search name or @username:");if(!q)return;document.querySelectorAll(".row").forEach(function(r){r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?"flex":"none"})};el("logoutBtn").onclick=function(){auth.signOut()};el("myAvatarTop").onclick=function(){show("settingsScreen")};el("sendBtn").onclick=sendMsg;el("textInput").onkeydown=function(e){if(e.key==="Enter")sendMsg()};el("callBtn").onclick=function(){alert("📞 Calling "+cur+"... (coming soon)")};el("videoBtn").onclick=function(){alert("📹 Video call "+cur+"... (coming soon)")};el("notifRow").onclick=function(){show("notifScreen")};el("privacyRow").onclick=function(){show("privacyScreen")};el("wallpaperRow").onclick=function(){show("wallpaperScreen")};el("helpRow").onclick=function(){show("helpScreen")};el("helpContactBtn").onclick=function(){window.location.href="mailto:emmanuelnas02@gmail.com?subject=Ojoola Help"};
+function bind(id,key,def,cb){var t=el(id);if(!t)return;var v=localStorage.getItem(key);if(v===null)v=def?"1":"0";function r(){t.classList.toggle("off",v!=="1")}r();t.onclick=function(e){e.stopPropagation();v=v==="1"?"0":"1";localStorage.setItem(key,v);r();if(cb)cb(v==="1")}}
+bind("msgNotifSwitch","ojoola_msgNotif",true,function(on){el("notifStatus").textContent=on?"ON":"OFF"});bind("groupNotifSwitch","ojoola_groupNotif",true);bind("soundSwitch","ojoola_sound",true);bind("vibrateSwitch","ojoola_vibrate",true);bind("readSwitch","ojoola_read",true,function(on){el("privacyStatus").textContent=on?"Read receipts ON":"Read receipts OFF"});bind("onlineSwitch","ojoola_online",true);bind("picPrivacySwitch","ojoola_picPrivacy",true);
+el("testNotifBtn").onclick=function(){askPerm();beep();vib();try{if(!actx)actx=new (window.AudioContext||window.webkitAudioContext)();if(actx.state==="suspended")actx.resume();var o=actx.createOscillator(),g=actx.createGain();o.connect(g);g.connect(actx.destination);o.type="sine";o.frequency.setValueAtTime(880,actx.currentTime);o.frequency.setValueAtTime(660,actx.currentTime+0.12);g.gain.setValueAtTime(.25,actx.currentTime);g.gain.exponentialRampToValueAtTime(.01,actx.currentTime+.35);o.start();o.stop(actx.currentTime+.35)}catch(e){}try{if(navigator.vibrate)navigator.vibrate([200,100,200])}catch(e){}if("Notification" in window&&Notification.permission==="granted"){try{new Notification("Ojoola Test 💙",{body:"Sound + Vibrate dey work!"})}catch(e){}}el("testNotifMsg").textContent="✅ Test done! If no beep, check phone no dey Silent + Notifications = Allow"};
+var wallMap={blue:"#eaf3ff",green:"#dcfce7",pink:"#fce7f3",purple:"#ede9fe",dark:"#0f172a",white:"#fff"};var wallNames={blue:"Blue Hearts 💙",green:"Green 💚",pink:"Pink 💖",purple:"Purple 💜",dark:"Dark 🌙",white:"White 🤍"};
+function applyWall(){var w=localStorage.getItem("ojoola_wall")||"blue";el("messages").style.background=wallMap[w]||wallMap.blue;el("wallpaperStatus").textContent=wallNames[w]||wallNames.blue;document.querySelectorAll(".wall-opt").forEach(function(o){o.classList.toggle("selected",o.getAttribute("data-wall")===w)})}
+document.querySelectorAll(".wall-opt").forEach(function(o){o.onclick=function(){document.querySelectorAll(".wall-opt").forEach(function(x){x.classList.remove("selected")});o.classList.add("selected");localStorage.setItem("ojoola_wall",o.getAttribute("data-wall"));applyWall();el("wallMsg").textContent="✅ Wallpaper changed"}});applyWall();
+function setDark(on){document.body.classList.toggle("dark",on);el("darkSwitch").classList.toggle("off",!on);localStorage.setItem("ojoola_dark",on?"1":"0")}el("darkSwitch").onclick=function(e){e.stopPropagation();setDark(!document.body.classList.contains("dark"))};el("darkRow").onclick=function(){setDark(!document.body.classList.contains("dark"))};if(localStorage.getItem("ojoola_dark")==="1")setDark(true);
+function setPicStatus(t,ok){var s=el("picStatus");if(s){s.textContent=t;s.style.color=ok?"#16a34a":"#dc2626"}}
+function compress(f,cb){var r=new FileReader();r.onload=function(e){var img=new Image();img.onload=function(){var c=document.createElement("canvas"),max=300,w=img.width,h=img.height;if(w>h){if(w>max){h=h*max/w;w=max}}else{if(h>max){w=w*max/h;h=max}}c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);cb(c.toDataURL("image/jpeg",.75))};img.onerror=function(){cb(null)};img.src=e.target.result};r.readAsDataURL(f)}
+function applyPic(){if(!myPic)return;var t=el("myAvatarTop");t.innerHTML="";var i1=document.createElement("img");i1.src=myPic;t.appendChild(i1);var s=el("settingsAvatar");s.innerHTML="";var i2=document.createElement("img");i2.src=myPic;var d=document.createElement("span");d.className="dot";s.appendChild(i2);s.appendChild(d);el("picLabel").textContent="📸 Change My Profile Picture"}
+function clearPic(){var ini=(myName||"E").charAt(0).toUpperCase();el("myAvatarTop").textContent=ini;el("settingsAvatar").innerHTML=ini+'<span class="dot"></span>';el("picLabel").textContent="📸 Add My Profile Picture"}
+el("picInput").onchange=function(e){var f=e.target.files[0];if(!f)return;setPicStatus("Uploading...",true);compress(f,function(data){if(!data){setPicStatus("Could not read picture. Try another.",false);return}myPic=data;try{localStorage.setItem("ojoola_pic",myPic)}catch(err){}applyPic();if(auth.currentUser)db.collection("users").doc(auth.currentUser.uid).set({photo:myPic},{merge:true}).then(function(){setPicStatus("✅ Profile picture saved! 💙",true);renderList()});e.target.value=""})};
+function loadContacts(){try{contacts=JSON.parse(localStorage.getItem("ojoola_contacts")||"[]")}catch(e){contacts=[]}}function saveContacts(){try{localStorage.setItem("ojoola_contacts",JSON.stringify(contacts))}catch(e){}}
+el("addContactBtn").onclick=function(){var name=el("newNameInput").value.trim(),other=clean(el("newEmailInput").value);if(!name){el("addMsg").textContent="Enter person name";return}if(!other||other.length<3){el("addMsg").textContent="Enter @username e.g. @mum01";return}if(!myUser){el("addMsg").textContent="You need @username first. Log out and Sign Up again.";return}var cid=room(myUser,other);loadContacts();var ex=contacts.find(function(c){return (c.username||"").toLowerCase()===other});if(ex){ex.chatId=cid;saveContacts();openChat(ex.name,ex.name.charAt(0).toUpperCase(),cid,ex.photo||"");return}var ct={name:name,username:other,chatId:cid,photo:""};contacts.unshift(ct);saveContacts();if(auth.currentUser)db.collection("contacts").add({ownerUid:auth.currentUser.uid,ownerUsername:myUser,name:name,username:other,chatId:cid,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).catch(function(){});el("newNameInput").value="";el("newEmailInput").value="";el("addMsg").textContent="✅ @"+other+" added!";setTimeout(function(){openChat(name,name.charAt(0).toUpperCase(),cid,"")},400)};
+function openProfile(u){curProfile=u;var a=el("profileAvatar");if(u.photo)a.innerHTML='<img src="'+u.photo+'"><span class="dot"></span>';else a.innerHTML=(u.name||"?").charAt(0).toUpperCase()+'<span class="dot"></span>';el("profileName").textContent=u.name||"User";el("profileUsername").textContent="@"+(u.username||u.username_lower||"no-username");el("profileEmail").textContent=u.email||"";el("profileInfoName").textContent=u.name||"User";el("profileInfoUsername").textContent="@"+(u.username||u.username_lower||"no-username");el("profileMsg").textContent="";show("profileScreen")}
+el("profileChatBtn").onclick=function(){if(!curProfile)return;var other=curProfile.username||curProfile.username_lower;if(!other){el("profileMsg").textContent="No @username yet";return}if(!myUser){el("profileMsg").textContent="You need @username first";return}if(other.toLowerCase()===myUser.toLowerCase()){el("profileMsg").textContent="Na your own profile";return}var cid=room(myUser,other);loadContacts();if(!contacts.find(function(c){return (c.username||"").toLowerCase()===other.toLowerCase()})){contacts.unshift({name:curProfile.name,username:other,chatId:cid,photo:curProfile.photo||""});saveContacts()}openChat(curProfile.name,(curProfile.name||"?").charAt(0).toUpperCase(),cid,curProfile.photo||"")};
+el("profileCopyBtn").onclick=function(){if(!curProfile)return;var u="@"+(curProfile.username||curProfile.username_lower||"");if(navigator.clipboard)navigator.clipboard.writeText(u).then(function(){el("profileMsg").textContent="✅ Copied "+u});else{prompt("Copy @username:",u)}};
+function findByName(n){var f=users.find(function(u){return (u.name||"").toLowerCase()===(n||"").toLowerCase()});if(f)return f;var c=contacts.find(function(x){return (x.name||"").toLowerCase()===(n||"").toLowerCase()});if(c)return {name:c.name,username:c.username,email:c.email,photo:c.photo};return {name:n,username:"",email:"",photo:""}};
+function renderNew(){var box=el("realUsersList");box.innerHTML="";if(users.length===0){var e=document.createElement("div");e.className="empty";e.innerHTML="No users yet.<br>Add by @username above 💙";box.appendChild(e)}else{users.forEach(function(u){var d=document.createElement("div");d.className="row";var ini=(u.name||"?").charAt(0).toUpperCase();var av=u.photo?'<div class="ava"><img src="'+u.photo+'"><span class="dot"></span></div>':'<div class="ava">'+ini+'<span class="dot"></span></div>';d.innerHTML=av+'<div style="flex:1"><b>'+u.name+'</b><p>@'+(u.username||u.username_lower||"")+'</p></div><span>Chat ›</span>';d.onclick=function(){if(!myUser){alert("Need @username first");return}if(!(u.username||u.username_lower)){alert("No @username yet");return}openChat(u.name,ini,room(myUser,u.username||u.username_lower),u.photo||"")};var ae=d.querySelector(".ava");if(ae)ae.onclick=function(ev){ev.stopPropagation();openProfile(u)};box.appendChild(d)})}loadContacts();if(contacts.length>0){var lab=document.createElement("div");lab.className="section-label";lab.textContent="My Added Contacts";box.appendChild(lab);contacts.forEach(function(c){var d=document.createElement("div");d.className="row";d.innerHTML='<div class="ava">'+c.name.charAt(0).toUpperCase()+'</div><div style="flex:1"><b>'+c.name+'</b><p>@'+(c.username||"")+'</p></div><span>Chat ›</span>';d.onclick=function(){openChat(c.name,c.name.charAt(0).toUpperCase(),c.chatId,c.photo||"")};box.appendChild(d)})}}
+function renderList(){loadContacts();var list=el("chatList");list.innerHTML="";var g=document.createElement("div");g.className="row";g.innerHTML='<div class="ava">💙<span class="dot"></span></div><div style="flex:1"><b>Group Chat</b><p>Tap to chat with everybody ❤️</p></div>';g.onclick=function(){openChat("Group Chat","💙","group_chat","")};list.appendChild(g);users.forEach(function(u){var d=document.createElement("div");d.className="row";var ini=(u.name||"?").charAt(0).toUpperCase();var av=u.photo?'<div class="ava"><img src="'+u.photo+'"><span class="dot"></span></div>':'<div class="ava">'+ini+'<span class="dot"></span></div>';d.innerHTML=av+'<div style="flex:1"><b>'+u.name+'</b><p>@'+(u.username||u.username_lower||"")+'</p></div>';d.onclick=function(){if(!myUser){alert("Need @username");return}if(!(u.username||u.username_lower)){alert("No @username yet");return}openChat(u.name,ini,room(myUser,u.username||u.username_lower),u.photo||"")};var ae=d.querySelector(".ava");if(ae)ae.onclick=function(ev){ev.stopPropagation();openProfile(u)};list.appendChild(d)});contacts.forEach(function(c){var d=document.createElement("div");d.className="row";var ini=c.name.charAt(0).toUpperCase();var av=c.photo?'<div class="ava"><img src="'+c.photo+'"><span class="dot"></span></div>':'<div class="ava">'+ini+'</div>';d.innerHTML=av+'<div style="flex:1"><b>'+c.name+'</b><p>@'+(c.username||"")+'</p></div>';d.onclick=function(){openChat(c.name,ini,c.chatId,c.photo||"")};var ae2=d.querySelector(".ava");if(ae2)ae2.onclick=function(ev){ev.stopPropagation();openProfile({name:c.name,username:c.username,email:c.email,photo:c.photo})};list.appendChild(d)});if(users.length===0&&contacts.length===0){var em=document.createElement("div");em.className="empty";em.innerHTML="No chats yet.<br>Tap + to add by @username 💙";list.appendChild(em)}}
+function openChat(name,emoji,cid,photo){cur=name;curId=cid;el("chatTitle").textContent=name;if(photo)el("chatAvatar").innerHTML='<img src="'+photo+'"><span class="dot"></span>';else el("chatAvatar").innerHTML=emoji+'<span class="dot"></span>';show("chatScreen");applyWall();renderMsgs()}
+function sendMsg(){var inp=el("textInput"),txt=inp.value.trim();if(!txt)return;var u=auth.currentUser;if(!u){el("msg2").textContent="Login first";return}db.collection("messages").add({text:txt,name:u.displayName||u.email,username:myUser||"",uid:u.uid,chatId:curId,chatName:cur,createdAt:firebase.firestore.FieldValue.serverTimestamp()}).then(function(){inp.value="";el("msg2").textContent=""}).catch(function(e){el("msg2").textContent="Could not send: "+e.message})}
+function renderMsgs(){var box=el("messages");box.innerHTML="";var f=msgs.filter(function(d){if(curId==="group_chat"){return d.chatId==="group_chat"||d.chatId==="family_crew"||!d.chatId}if(d.chatId&&d.chatId!==curId)return false;if(!d.chatId&&curId!=="group_chat")return false;return true});if(f.length===0){var e=document.createElement("div");e.style.textAlign="center";e.style.color="#64748b";e.style.padding="20px";e.innerHTML="No messages yet with "+cur+".<br>Start chatting 💙";box.appendChild(e);return}f.forEach(function(d){var div=document.createElement("div");var me=auth.currentUser&&d.uid===auth.currentUser.uid;div.className="msg "+(me?"me":"other");if(!me&&curId==="group_chat"){var h=document.createElement("div");h.style.display="flex";h.style.gap="6px";h.style.cursor="pointer";h.style.marginBottom="4px";var ad=document.createElement("div");ad.style.width="28px";ad.style.height="28px";ad.style.borderRadius="50%";ad.style.background="#2563eb";ad.style.color="#fff";ad.style.display="flex";ad.style.alignItems="center";ad.style.justifyContent="center";ad.style.fontSize="13px";ad.style.fontWeight="800";ad.style.overflow="hidden";var su=findByName(d.name);if(d.username){su.username=d.username;su.username_lower=d.username}if(su.photo){var im=document.createElement("img");im.src=su.photo;im.style.width="100%";im.style.height="100%";im.style.objectFit="cover";ad.appendChild(im)}else{ad.textContent=(d.name||"?").charAt(0).toUpperCase()}var ns=document.createElement("span");ns.style.fontSize="12px";ns.style.color="#2563eb";ns.style.fontWeight="700";ns.style.textDecoration="underline";ns.textContent=(d.name||"")+" • @"+(su.username||su.username_lower||"tap")+" ›";h.appendChild(ad);h.appendChild(ns);h.onclick=function(){openProfile(su)};div.appendChild(h);var hint=document.createElement("div");hint.style.fontSize="10px";hint.style.color="#94a3b8";hint.textContent="Tap name to view profile";div.appendChild(hint)}var sp=document.createElement("span");sp.textContent=d.text||"";div.appendChild(sp);var t=document.createElement("div");t.className="msg-time";var ro=localStorage.getItem("ojoola_read")!=="0";t.textContent=me?(ro?"Now ✓✓":"Now ✓"):"Now";div.appendChild(t);box.appendChild(div)});box.scrollTop=box.scrollHeight}
+function startListeners(){if(started)return;started=true;db.collection("users").onSnapshot(function(snap){var me=auth.currentUser;users=[];snap.forEach(function(doc){var d=doc.data();if(me&&d.uid===me.uid){if(d.photo&&!myPic){myPic=d.photo;try{localStorage.setItem("ojoola_pic",myPic)}catch(e){}applyPic()}if(d.username){myUser=d.username;try{localStorage.setItem("ojoola_username",myUser)}catch(e){}el("settingsUsername").textContent="@"+myUser}return}users.push(d)});if(!el("listScreen").classList.contains("hidden"))renderList()});db.collection("messages").orderBy("createdAt","asc").onSnapshot(function(snap){var nm=[];snap.forEach(function(doc){nm.push(doc.data())});if(lastCount>0&&nm.length>lastCount){var latest=nm[nm.length-1];var isMe=auth.currentUser&&latest.uid===auth.currentUser.uid;if(!isMe){beep();vib();var forMe=(latest.chatId===curId)||(curId==="group_chat"&&(latest.chatId==="group_chat"||latest.chatId==="family_crew"));if(!forMe||el("chatScreen").classList.contains("hidden"))popup("Ojoola - "+(latest.name||"New message"),latest.text||"")}}msgs=nm;lastCount=msgs.length;if(!el("chatScreen").classList.contains("hidden"))renderMsgs();if(!el("listScreen").classList.contains("hidden"))renderList()});if(auth.currentUser)db.collection("contacts").where("ownerUid","==",auth.currentUser.uid).onSnapshot(function(snap){var fb=[];snap.forEach(function(doc){var d=doc.data();fb.push({name:d.name,username:d.username||"",chatId:d.chatId,photo:""})});loadContacts();fb.forEach(function(x){if(!contacts.find(function(c){return c.chatId===x.chatId}))contacts.push(x)});saveContacts();if(!el("listScreen").classList.contains("hidden"))renderList()})}
+if(auth)auth.onAuthStateChanged(function(u){if(u){myName=u.displayName||u.email||"User";el("settingsName").textContent=myName;el("settingsEmail").textContent=u.email;el("settingsUsername").textContent=myUser?"@"+myUser:"@no-username yet";myPic=localStorage.getItem("ojoola_pic")||"";if(myPic)applyPic();else clearPic();setPicStatus("",true);loadContacts();renderList();show("listScreen");startListeners();askPerm()}else{show("authScreen")}});
 })();
-</script>
-</body>
-</html>
+</script></body></html>
