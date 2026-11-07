@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OjoolaChat - Made for Family and Friends</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{background:#0A66FF}
+.screen{display:none;min-height:100vh;padding:22px;flex-direction:column}
+.screen.active{display:flex}
+.center{justify-content:center;align-items:center;text-align:center;background:linear-gradient(160deg,#0A66FF,#00C6FF);color:#fff}
+.logoBox{width:140px;height:140px;background:rgba(255,255,255,.25);border:1px solid rgba(255,255,255,.6);border-radius:35px;display:flex;align-items:center;justify-content:center;box-shadow:0 20px 40px rgba(0,0,0,.25);margin-bottom:20px}
+.logoInner{width:105px;height:105px;background:#fff;border-radius:28px;display:flex;align-items:center;justify-content:center;font-size:52px}
+h1{font-size:42px} .tag{opacity:.95;margin-top:8px;font-size:17px}
+.whiteCard{background:#fff;color:#111;border-radius:24px;padding:22px;width:100%;max-width:380px;margin-top:20px;box-shadow:0 15px 35px rgba(0,0,0,.2)}
+input{width:100%;padding:16px;border-radius:14px;border:1.5px solid #E5E7EB;background:#F8FAFF;font-size:16px;margin-top:12px;outline:none}
+.btn{width:100%;padding:16px;border:none;border-radius:14px;background:#0A66FF;color:#fff;font-weight:700;font-size:17px;margin-top:16px;cursor:pointer}
+.btnWhite{background:#fff;color:#0A66FF}
+.lightBg{background:#F2F6FF;color:#111}
+.top{display:flex;justify-content:space-between;align-items:center}
+.avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#0A66FF,#00C6FF);display:flex;align-items:center;justify-content:center;font-size:24px;color:#fff;position:relative;flex-shrink:0}
+.dot{position:absolute;right:2px;bottom:2px;width:13px;height:13px;background:#22C55E;border:2px solid #fff;border-radius:50%}
+.chatCard{background:#fff;border-radius:18px;padding:14px;display:flex;gap:12px;align-items:center;margin-top:12px;box-shadow:0 4px 15px rgba(0,0,0,.06);cursor:pointer}
+.bubble{max-width:82%;padding:12px 16px;border-radius:20px;font-size:15px;line-height:1.4;margin-top:10px}
+.me{background:#0A66FF;color:#fff;align-self:flex-end;border-bottom-right-radius:6px}
+.mum{background:#fff;color:#111;align-self:flex-start;border-bottom-left-radius:6px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+.pill{background:#EAF2FF;color:#0A66FF;padding:8px 12px;border-radius:20px;font-size:13px;font-weight:700;border:none;cursor:pointer}
+</style>
+</head>
+<body>
+
+<!-- 1. SPLASH -->
+<div id="splash" class="screen active center">
+<div class="logoBox"><div class="logoInner">💬💙</div></div>
+<h1>OjoolaChat</h1>
+<p class="tag">Made for Family and Friends</p>
+<p style="margin-top:14px;font-size:14px;opacity:.85">Safe • Secure • Fast</p>
+<button class="btn btnWhite" style="max-width:320px" onclick="showScreen('login')">Get Started →</button>
+</div>
+
+<!-- 2. LOGIN -->
+<div id="login" class="screen center">
+<div class="logoBox" style="width:90px;height:90px"><div class="logoInner" style="width:65px;height:65px;font-size:32px">💬💙</div></div>
+<h1 style="font-size:32px">Welcome Back</h1>
+<p class="tag">Login with your phone number</p>
+<div class="whiteCard">
+<label style="font-weight:700;font-size:14px">Phone Number</label>
+<input placeholder="+234 801 234 5678">
+<button class="btn" onclick="showScreen('chats')">Continue →</button>
+<p style="text-align:center;font-size:13px;color:#666;margin-top:12px">We will send you a code to verify</p>
+</div>
+</div>
+
+<!-- 3. CHAT LIST -->
+<div id="chats" class="screen lightBg">
+<div class="top"><div><h2 style="font-size:28px">Chats</h2><p style="color:#666;font-size:13px">3 chats • 2 online</p></div><button class="pill" onclick="showScreen('profile')">⚙️ Profile</button></div>
+<input placeholder="🔍 Search family & friends..." style="margin-top:16px">
+<div class="chatCard" onclick="showScreen('chat')"><div class="avatar">❤️<span class="dot"></span></div><div style="flex:1"><b>Mum ❤️</b><div style="color:#666;font-size:14px">Good morning dear ❤️</div></div><span style="color:#0A66FF;font-weight:700">9:41</span></div>
+<div class="chatCard"><div class="avatar" style="background:linear-gradient(135deg,#FF6B6B,#FFA500)">👨‍👩‍👧</div><div style="flex:1"><b>Family Group</b><div style="color:#666;font-size:14px">Dad: Jollof rice for Sunday?</div></div><span>8:30</span></div>
+<div class="chatCard"><div class="avatar" style="background:linear-gradient(135deg,#8B5CF6,#EC4899)">👭</div><div style="flex:1"><b>Friends</b><div style="color:#666;font-size:14px">Ada: See you tomorrow!</div></div><span>Yesterday</span></div>
+</div>
+
+<!-- 4. CHAT WITH MUM -->
+<div id="chat" class="screen lightBg">
+<div class="top"><span onclick="showScreen('chats')" style="font-size:22px;cursor:pointer">←</span><div style="display:flex;gap:10px;align-items:center"><div class="avatar" style="width:42px;height:42px">❤️<span class="dot"></span></div><div><b>Mum ❤️</b><div style="color:#22C55E;font-size:12px">● Online</div></div></div><span style="font-size:20px">📞 📹</span></div>
+<div style="display:flex;flex-direction:column;flex:1;overflow:auto">
+<div style="text-align:center;margin-top:12px"><span style="background:#fff;padding:6px 12px;border-radius:20px;font-size:12px;color:#666">Today</span></div>
+<div class="bubble mum">Good morning dear ❤️</div>
+<div class="bubble mum">Jollof rice for Sunday?</div>
+<div class="bubble me">Yes Mum! I go come early 😊</div>
+<div id="msgs" style="display:flex;flex-direction:column"></div>
+</div>
+<div style="display:flex;gap:10px;margin-top:10px"><input id="msgInput" placeholder="Type a message..." style="margin-top:0"><button class="btn" style="width:60px;margin-top:0;border-radius:50%" onclick="sendMsg()">➤</button></div>
+</div>
+
+<!-- 5. PROFILE -->
+<div id="profile" class="screen lightBg">
+<div class="top"><span onclick="showScreen('chats')" style="font-size:22px;cursor:pointer">←</span><h2>Profile</h2><span></span></div>
+<div class="chatCard" style="flex-direction:column;text-align:center;padding:22px"><div class="avatar" style="width:80px;height:80px;font-size:36px">❤️</div><h3 style="margin-top:10px">Mum</h3><p style="color:#666">+234 801 234 5678</p><p style="color:#666;font-size:13px">Family • Always Online</p></div>
+<div class="chatCard">🔔 &nbsp; Notifications <b style="margin-left:auto;color:#22C55E">ON</b></div>
+<div class="chatCard">🔒 &nbsp; Privacy</div>
+<div class="chatCard">🎨 &nbsp; Wallpaper</div>
+<div class="chatCard">❓ &nbsp; Help</div>
+<button class="btn" style="background:#FF3B30" onclick="showScreen('login')">Log Out</button>
+</div>
+
+<script>
+function showScreen(id){
+  var all = document.querySelectorAll('.screen');
+  for(var i=0;i<all.length;i++){ all[i].classList.remove('active'); }
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function sendMsg(){
+  var input = document.getElementById('msgInput');
+  var v = input.value;
+  if(!v) return;
+  var d = document.createElement('div');
+  d.className = 'bubble me';
+  d.innerText = v;
+  document.getElementById('msgs').appendChild(d);
+  input.value = '';
+  setTimeout(function(){
+    var r = document.createElement('div');
+    r.className = 'bubble mum';
+    r.innerText = 'Okay dear ❤️';
+    document.getElementById('msgs').appendChild(r);
+  },900);
+}
+</script>
+</body>
+</html>
