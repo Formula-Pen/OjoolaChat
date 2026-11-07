@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OjoolaChat - Connect with Family and Friends</title>
+<title>OjoolaChat</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;min-height:100vh;background:linear-gradient(135deg,#4f46e5,#7c3aed 45%,#0ea5e9);display:flex;align-items:center;justify-content:center;padding:16px}
@@ -62,7 +62,7 @@ input:focus{border-color:#7c3aed;background:#fff}
 <div class="hint">Password must be at least 8 characters.</div>
 <button type="button" class="btn btn-primary" id="mainBtn">Login</button>
 <button type="button" class="btn btn-sec" id="toggleBtn">Don't have account? Create Account</button>
-<div id="msg"></div>
+<div id="msg">Loading...</div>
 </div>
 
 <div class="card hidden" id="chatCard">
@@ -74,16 +74,14 @@ input:focus{border-color:#7c3aed;background:#fff}
 </div>
 <div id="msg2"></div>
 </div>
-
 <div class="footer">Made with ❤️ for family & friends • OjoolaChat</div>
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, updateProfile } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, orderBy, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<script>
+var firebaseConfig = {
   apiKey: "AIzaSyBXU6HnCTOAabLEyc3NANNLgZi3OJYpGVk",
   authDomain: "ojoolachat.firebaseapp.com",
   projectId: "ojoolachat",
@@ -92,44 +90,46 @@ const firebaseConfig = {
   appId: "1:30543009981:web:10c2641baa64864f96ffd4"
 };
 
-const msg = document.getElementById("msg");
-const msg2 = document.getElementById("msg2");
-function showMsg(t, ok) {
-  msg.textContent = t;
-  msg.style.color = ok ? "#16a34a" : "#dc2626";
+var msgEl = document.getElementById("msg");
+var msg2El = document.getElementById("msg2");
+function showMsg(t, ok){
+  msgEl.textContent = t;
+  msgEl.style.color = ok ? "#16a34a" : "#dc2626";
 }
-let isSignup = false;
-let auth = null;
-let db = null;
+
+var isSignup = false;
+var auth = null;
+var db = null;
+
 try {
-  const app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
+  if (typeof firebase === "undefined") {
+    showMsg("Firebase did not load - check network / ON WARP and refresh", false);
+  } else {
+    firebase.initializeApp(firebaseConfig);
+    auth = firebase.auth();
+    db = firebase.firestore();
+    showMsg("JS Loaded ✅ - Ready", true);
+  }
 } catch(e) {
-  showMsg("Firebase config error: check firebaseConfig");
+  showMsg("Error: " + e.message, false);
 }
 
-const authTitle = document.getElementById("authTitle");
-const authSub = document.getElementById("authSub");
-const nameWrap = document.getElementById("nameWrap");
-const nameInput = document.getElementById("nameInput");
-const emailInput = document.getElementById("emailInput");
-const passInput = document.getElementById("passInput");
-const mainBtn = document.getElementById("mainBtn");
-const toggleBtn = document.getElementById("toggleBtn");
-const eyeBtn = document.getElementById("eyeBtn");
+var authTitle = document.getElementById("authTitle");
+var authSub = document.getElementById("authSub");
+var nameWrap = document.getElementById("nameWrap");
+var nameInput = document.getElementById("nameInput");
+var emailInput = document.getElementById("emailInput");
+var passInput = document.getElementById("passInput");
+var mainBtn = document.getElementById("mainBtn");
+var toggleBtn = document.getElementById("toggleBtn");
+var eyeBtn = document.getElementById("eyeBtn");
 
-eyeBtn.addEventListener("click", function() {
-  if (passInput.type === "password") {
-    passInput.type = "text";
-    eyeBtn.textContent = "🙈";
-  } else {
-    passInput.type = "password";
-    eyeBtn.textContent = "👁️";
-  }
-});
+eyeBtn.onclick = function(){
+  if (passInput.type === "password") { passInput.type = "text"; eyeBtn.textContent = "🙈"; }
+  else { passInput.type = "password"; eyeBtn.textContent = "👁️"; }
+};
 
-toggleBtn.addEventListener("click", function() {
+toggleBtn.onclick = function(){
   isSignup = !isSignup;
   if (isSignup) {
     authTitle.textContent = "Create your account";
@@ -145,60 +145,71 @@ toggleBtn.addEventListener("click", function() {
     nameWrap.classList.add("hidden");
   }
   showMsg("", false);
-});
+};
 
-mainBtn.addEventListener("click", async function() {
-  const email = emailInput.value.trim();
-  const pass = passInput.value;
-  const name = nameInput.value.trim();
+mainBtn.onclick = function(){
+  showMsg("Button clicked ✅ - working...", true);
+  var email = emailInput.value.trim();
+  var pass = passInput.value;
+  var name = nameInput.value.trim();
   if (!email || !pass) { showMsg("Please enter email and password", false); return; }
   if (pass.length < 8) { showMsg("Password must be at least 8 characters", false); return; }
   if (isSignup && !name) { showMsg("Please enter your name", false); return; }
+  if (!auth) { showMsg("Firebase not loaded - ON WARP and refresh", false); return; }
   mainBtn.disabled = true;
   mainBtn.textContent = "Please wait...";
-  try {
-    if (isSignup) {
-      const cred = await createUserWithEmailAndPassword(auth, email, pass);
-      if (name) { await updateProfile(cred.user, { displayName: name }); }
+  if (isSignup) {
+    auth.createUserWithEmailAndPassword(email, pass).then(function(cred){
+      if (name) { return cred.user.updateProfile({displayName: name}); }
+    }).then(function(){
       showMsg("Account created! Welcome", true);
-    } else {
-      await signInWithEmailAndPassword(auth, email, pass);
+      mainBtn.disabled = false;
+      mainBtn.textContent = "Create Account";
+    }).catch(function(e){
+      var m = e.message;
+      if (e.code === "auth/email-already-in-use") m = "This email already has account. Tap Login instead.";
+      if (e.code === "auth/operation-not-allowed") m = "Email/Password NOT enabled in Firebase. Go enable am.";
+      if (e.code === "auth/invalid-email") m = "Please enter a valid email.";
+      showMsg(m, false);
+      mainBtn.disabled = false;
+      mainBtn.textContent = "Create Account";
+    });
+  } else {
+    auth.signInWithEmailAndPassword(email, pass).then(function(){
       showMsg("Login successful!", true);
-    }
-  } catch(e) {
-    let m = e.message;
-    if (e.code === "auth/email-already-in-use") m = "This email already has account. Tap Login instead.";
-    if (e.code === "auth/invalid-credential") m = "Wrong email or password. Try again.";
-    if (e.code === "auth/user-not-found") m = "No account for this email. Tap Create Account.";
-    if (e.code === "auth/invalid-email") m = "Please enter a valid email.";
-    showMsg(m, false);
+      mainBtn.disabled = false;
+      mainBtn.textContent = "Login";
+    }).catch(function(e){
+      var m = e.message;
+      if (e.code === "auth/invalid-credential") m = "Wrong email or password. Try again.";
+      if (e.code === "auth/user-not-found") m = "No account for this email. Tap Create Account.";
+      if (e.code === "auth/operation-not-allowed") m = "Email/Password NOT enabled in Firebase. Go enable am.";
+      showMsg(m, false);
+      mainBtn.disabled = false;
+      mainBtn.textContent = "Login";
+    });
   }
-  mainBtn.disabled = false;
-  mainBtn.textContent = isSignup ? "Create Account" : "Login";
-});
+};
 
-document.getElementById("logoutBtn").addEventListener("click", function() { signOut(auth); });
-document.getElementById("sendBtn").addEventListener("click", sendMsg);
-document.getElementById("textInput").addEventListener("keydown", function(e) { if (e.key === "Enter") sendMsg(); });
-passInput.addEventListener("keydown", function(e) { if (e.key === "Enter") mainBtn.click(); });
+document.getElementById("logoutBtn").onclick = function(){ auth.signOut(); };
+document.getElementById("sendBtn").onclick = sendMsg;
+document.getElementById("textInput").onkeydown = function(e){ if(e.key==="Enter") sendMsg(); };
 
-async function sendMsg() {
-  const input = document.getElementById("textInput");
-  const text = input.value.trim();
+function sendMsg(){
+  var input = document.getElementById("textInput");
+  var text = input.value.trim();
   if (!text) return;
-  const user = auth.currentUser;
-  if (!user) { msg2.textContent = "Please login first"; return; }
-  try {
-    await addDoc(collection(db, "messages"), { text: text, name: user.displayName || user.email, uid: user.uid, createdAt: serverTimestamp() });
-    input.value = "";
-    msg2.textContent = "";
-  } catch(e) { msg2.textContent = "Could not send: " + e.message; }
+  var user = auth.currentUser;
+  if (!user) { msg2El.textContent = "Please login first"; return; }
+  db.collection("messages").add({ text: text, name: user.displayName || user.email, uid: user.uid, createdAt: firebase.firestore.FieldValue.serverTimestamp() }).then(function(){
+    input.value = ""; msg2El.textContent = "";
+  }).catch(function(e){ msg2El.textContent = "Could not send: " + e.message; });
 }
 
 if (auth) {
-  onAuthStateChanged(auth, function(user) {
-    const authCard = document.getElementById("authCard");
-    const chatCard = document.getElementById("chatCard");
+  auth.onAuthStateChanged(function(user){
+    var authCard = document.getElementById("authCard");
+    var chatCard = document.getElementById("chatCard");
     if (user) {
       authCard.classList.add("hidden");
       chatCard.classList.remove("hidden");
@@ -211,22 +222,22 @@ if (auth) {
   });
 }
 
-let unsub = null;
-function startChat() {
-  if (unsub) return;
-  const q = query(collection(db, "messages"), orderBy("createdAt", "asc"));
-  unsub = onSnapshot(q, function(snap) {
-    const box = document.getElementById("messages");
+var unsubStarted = false;
+function startChat(){
+  if (unsubStarted) return;
+  unsubStarted = true;
+  db.collection("messages").orderBy("createdAt","asc").onSnapshot(function(snap){
+    var box = document.getElementById("messages");
     box.innerHTML = "";
-    snap.forEach(function(doc) {
-      const d = doc.data();
-      const div = document.createElement("div");
-      const me = auth.currentUser && d.uid === auth.currentUser.uid;
+    snap.forEach(function(doc){
+      var d = doc.data();
+      var div = document.createElement("div");
+      var me = auth.currentUser && d.uid === auth.currentUser.uid;
       div.className = "msg " + (me ? "me" : "other");
-      const small = document.createElement("small");
+      var small = document.createElement("small");
       small.textContent = d.name || "User";
       div.appendChild(small);
-      const span = document.createElement("span");
+      var span = document.createElement("span");
       span.textContent = d.text || "";
       div.appendChild(span);
       box.appendChild(div);
