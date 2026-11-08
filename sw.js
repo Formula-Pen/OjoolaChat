@@ -1,10 +1,15 @@
 self.addEventListener('install', e => {
   self.skipWaiting();
 });
+
 self.addEventListener('activate', e => {
   self.clients.claim();
 });
+
 self.addEventListener('fetch', e => {
-  // Let network handle everything, just make app installable
-  e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
+  e.respondWith(
+    fetch(e.request).catch(() => {
+      return new Response('Offline', { status: 503 });
+    })
+  );
 });
