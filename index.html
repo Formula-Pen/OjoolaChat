@@ -62,6 +62,7 @@ label{display:block;font-size:12px;font-weight:700;color:var(--mut);margin:12px 
 .mut{color:var(--mut);font-size:13px}
 h2{font-size:24px}h3{margin:18px 0 8px;font-size:15px}
 .err{color:#dc2626;font-size:13px;text-align:center;min-height:18px;margin-top:8px}
+.ban{background:#fee2e2;color:#b91c1c;font-size:12px;font-weight:600;padding:6px 12px;text-align:center;word-break:break-word}
 .link{color:var(--pri);font-weight:700;cursor:pointer}
 .toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:600;z-index:400;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .rain{position:fixed;top:-40px;font-size:26px;z-index:900;pointer-events:none;animation:rainfall 2.4s ease-in forwards}
@@ -138,7 +139,7 @@ nav button.on i{transform:translateY(-3px) scale(1.2)}
 #rbar button:active{transform:scale(1.4)}
 .ract{display:flex;justify-content:space-around;border-top:1px solid var(--bd);padding-top:4px}
 .ract button{font-size:13px!important;font-weight:700}
-.fw{font-size:11px;opacity:.75;margin-bottom:2px;font-style:italic}
+.fw{font-size:11px;opacity:.85;margin-bottom:2px;font-style:italic}
 .more{align-self:center;border:0;background:var(--card);color:var(--pri);font-weight:700;padding:8px 14px;border-radius:999px;cursor:pointer;font-size:13px;flex-shrink:0}
 /* Settings and profile */
 details{background:var(--card);border-radius:18px;margin-top:12px;padding:4px 16px;box-shadow:0 4px 18px rgba(0,0,0,.05)}
@@ -190,7 +191,7 @@ select.fld.in{width:auto;margin:0}
   <div id="wtitle"></div>
   <p class="wsub">Chat with family and friends, your way.</p>
   <button class="btn w" id="startBtn">Get started 🚀</button>
-  <p class="hint">Tap the bubble for a surprise</p>
+  <p class="hint" id="hint">Tap the bubble for a surprise</p>
 </div>
 
 <!-- Join / Login -->
@@ -258,6 +259,4 @@ select.fld.in{width:auto;margin:0}
       <button class="btn" id="editBtn" style="margin-top:12px">Edit profile ✏️</button>
     </div>
     <div class="card hidden" id="editBox" style="text-align:left">
-      <label style="margin-top:0">First name</label><input class="fld" id="eName" maxlength="24">
-      <label>Username</label><input class="fld" id="eUser" maxlength="20">
-      <div class="mut" id="eUserMsg" style="min-height:16p
+      <label style="margin-top:0">First name</label><input class="fld" id="eName" maxlength="2
