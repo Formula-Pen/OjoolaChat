@@ -709,5 +709,16 @@ $("delAcc").onclick=function(){var u=auth.currentUser;if(!u||!confirm("Delete yo
 mode(false);
 })();
 </script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function() {
+    navigator.serviceWorker.register('/sw.js')
+      .then(function(reg){ console.log('Ojoola SW installed'); })
+      .catch(function(err){ console.log('SW failed', err); });
+  });
+}
+</script>
+  
 </body>
 </html>
