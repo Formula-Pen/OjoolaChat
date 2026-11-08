@@ -889,7 +889,7 @@ $("recPause").onclick=function(){
 $("logout").onclick=function(){setOnline(false);auth.signOut()};
 $("delAcc").onclick=function(){var u=auth.currentUser;if(!u||!confirm("Delete your account permanently?"))return;db.collection("users").doc(u.uid).delete().then(function(){return u.delete()}).then(function(){Object.keys(localStorage).forEach(function(k){if(k.indexOf("oj_")===0)localStorage.removeItem(k)})}).catch(function(e){$("accMsg").textContent=e.code==="auth/requires-recent-login"?"Log out, log in again, then retry.":e.message})};
 
-/* Back button: go back inside the app, double-tap to exit */
+/* Back button: go back inside the app, Home is the last page, tap twice to exit */
 var exT=null;
 function trap(){clearTimeout(exT);if(!(history.state&&history.state.oj===1))history.pushState({oj:1},"")}
 function goBack(){
@@ -908,13 +908,13 @@ function goBack(){
     if($("t-home").classList.contains("hidden")){tab("home");return true}}
   return false}
 history.replaceState({oj:0},"");
-history.pushState({oj:1},"");
 window.addEventListener("popstate",function(e){
   if(e.state&&e.state.oj===1)return;
   if(goBack()){trap();return}
   toast("Tap back again to exit");
   clearTimeout(exT);exT=setTimeout(trap,2000)});
 document.addEventListener("click",trap,true);
+document.addEventListener("touchend",trap,true);
 
 mode(false);
 })();
