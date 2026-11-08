@@ -1,14 +1,10 @@
+
+```html
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#2563eb">
-<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
-<link rel="apple-touch-icon" href="/icon-192.png">
-<link rel="manifest" href="/manifest.json">
 <title>OjoolaChat</title>
 <style>
 :root{--bg:#eef2ff;--card:#fff;--tx:#0f172a;--mut:#64748b;--pri:#4f46e5;--fld:#f1f5f9;--bd:#e2e8f0;--wall:#e8eeff}
@@ -62,7 +58,6 @@ label{display:block;font-size:12px;font-weight:700;color:var(--mut);margin:12px 
 .mut{color:var(--mut);font-size:13px}
 h2{font-size:24px}h3{margin:18px 0 8px;font-size:15px}
 .err{color:#dc2626;font-size:13px;text-align:center;min-height:18px;margin-top:8px}
-.ban{background:#fee2e2;color:#b91c1c;font-size:12px;font-weight:600;padding:6px 12px;text-align:center;word-break:break-word}
 .link{color:var(--pri);font-weight:700;cursor:pointer}
 .toast{position:absolute;left:50%;bottom:96px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 18px;border-radius:999px;font-size:13px;font-weight:600;z-index:400;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.3)}
 .rain{position:fixed;top:-40px;font-size:26px;z-index:900;pointer-events:none;animation:rainfall 2.4s ease-in forwards}
@@ -133,14 +128,9 @@ nav button.on i{transform:translateY(-3px) scale(1.2)}
 .rdot{width:10px;height:10px;border-radius:50%;background:#dc2626;animation:blink 1s infinite;flex-shrink:0}
 .recbar.paused .rdot{animation:none;background:#94a3b8}
 .recbar b{font-variant-numeric:tabular-nums}
-#rbar{position:fixed;left:0;right:0;margin:0 auto;width:min(340px,94vw);bottom:100px;background:var(--card);border-radius:20px;padding:8px;display:flex;flex-direction:column;gap:6px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:50;animation:pop .25s}
-#rgrid{display:flex;flex-wrap:wrap;justify-content:center;max-height:132px;overflow-y:auto}
-#rbar button{border:0;background:none;font-size:24px;cursor:pointer;color:var(--tx);padding:4px 6px}
+#rbar{position:fixed;left:50%;transform:translateX(-50%);bottom:100px;background:var(--card);border-radius:999px;padding:8px 12px;display:flex;gap:6px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:50;animation:pop .25s}
+#rbar button{border:0;background:none;font-size:22px;cursor:pointer;color:var(--tx)}
 #rbar button:active{transform:scale(1.4)}
-.ract{display:flex;justify-content:space-around;border-top:1px solid var(--bd);padding-top:4px}
-.ract button{font-size:13px!important;font-weight:700}
-.fw{font-size:11px;opacity:.85;margin-bottom:2px;font-style:italic}
-.more{align-self:center;border:0;background:var(--card);color:var(--pri);font-weight:700;padding:8px 14px;border-radius:999px;cursor:pointer;font-size:13px;flex-shrink:0}
 /* Settings and profile */
 details{background:var(--card);border-radius:18px;margin-top:12px;padding:4px 16px;box-shadow:0 4px 18px rgba(0,0,0,.05)}
 summary{padding:14px 0;font-weight:700;cursor:pointer;list-style:none}
@@ -173,13 +163,6 @@ select.fld.in{width:auto;margin:0}
 .m audio{width:100%;min-width:200px;margin-top:4px}
 #viewer{position:fixed;inset:0;background:#000;z-index:300;display:flex;align-items:center;justify-content:center}
 #viewer img{max-width:100%;max-height:100%}
-/* Chat Rooms */
-.fab{position:absolute;right:16px;bottom:84px;height:52px;padding:0 20px;border:0;border-radius:999px;background:linear-gradient(135deg,#4f46e5,#06b6d4);color:#fff;font-size:15px;font-weight:800;cursor:pointer;box-shadow:0 8px 22px rgba(79,70,229,.45);z-index:6;animation:pop .35s}
-.fab:active{transform:scale(.92)}
-.sys{align-self:center;background:rgba(100,116,139,.18);color:var(--mut);font-size:12px;padding:4px 12px;border-radius:999px;max-width:85%;text-align:center}
-.badge2{font-size:11px;font-weight:700;color:#16a34a;border:1px solid #16a34a;border-radius:6px;padding:1px 6px;margin-left:4px}
-.chk{width:22px;height:22px;accent-color:#4f46e5;flex-shrink:0}
-.mini{display:flex;gap:6px;flex-wrap:wrap}
 </style>
 </head>
 <body>
@@ -191,7 +174,7 @@ select.fld.in{width:auto;margin:0}
   <div id="wtitle"></div>
   <p class="wsub">Chat with family and friends, your way.</p>
   <button class="btn w" id="startBtn">Get started 🚀</button>
-  <p class="hint" id="hint">Tap the bubble for a surprise</p>
+  <p class="hint">Tap the bubble for a surprise</p>
 </div>
 
 <!-- Join / Login -->
@@ -232,14 +215,14 @@ select.fld.in{width:auto;margin:0}
     <div class="chips" id="vibes"></div>
     <h3>Online now</h3>
     <div class="strip" id="onl"></div>
-    <div class="card row" id="circle"><div class="av">🏡</div><div><b>Chat Group</b><p>One room for members</p></div></div>
+    <div class="card row" id="circle"><div class="av">🏡</div><div><b>Family Circle</b><p>One room for everybody</p></div></div>
     <div class="card inv shim"><b>Invite friends 🎉</b><p class="mut">Your personal link is made for you automatically.</p>
       <div class="linkbox" id="hLink"></div>
       <button class="btn w" id="hCopy">Copy invite link</button></div>
   </div>
   <div class="pad tab hidden" id="t-chats">
     <h2>Chats</h2>
-    <input class="fld" id="search" placeholder="Search people and rooms 🔍">
+    <input class="fld" id="search" placeholder="Search people 🔍">
     <div id="chatList" style="margin-top:8px"></div>
   </div>
   <div class="pad tab hidden ph" id="t-me">
@@ -259,4 +242,27 @@ select.fld.in{width:auto;margin:0}
       <button class="btn" id="editBtn" style="margin-top:12px">Edit profile ✏️</button>
     </div>
     <div class="card hidden" id="editBox" style="text-align:left">
-      <label style="margin-top:0">First name</label><input class="fld" id="eName" maxlength="2
+      <label style="margin-top:0">First name</label><input class="fld" id="eName" maxlength="24">
+      <label>Username</label><input class="fld" id="eUser" maxlength="20">
+      <div class="mut" id="eUserMsg" style="min-height:16px;margin-top:4px"></div>
+      <label>Gender</label><select class="fld" id="eGender"><option value="">Select gender</option><option>Male</option><option>Female</option><option>Prefer not to say</option></select>
+      <label>Bio</label><input class="fld" id="eBio" placeholder="Short bio" maxlength="80">
+      <button class="btn" id="saveP" style="margin-top:14px">Save profile</button>
+      <button class="btn o" id="cancelP" style="margin-top:8px">Cancel</button>
+      <div class="err" id="pMsg"></div>
+    </div>
+  </div>
+  <div class="pad tab hidden" id="t-set">
+    <h2>Settings</h2>
+    <details open><summary>🎨 Appearance</summary>
+      <div class="seg" id="themeSeg"><button data-t="system">System</button><button data-t="light">Light</button><button data-t="dark">Dark</button></div></details>
+    <details><summary>🔔 Notifications and sounds</summary>
+      <div class="opt">Message alerts<div class="sw" data-k="msg"></div></div>
+      <div class="opt">Sound<div class="sw" data-k="sound"></div></div>
+      <div class="opt">Message sound<select class="fld in" id="sndSel"><option value="chime">Chime</option><option value="bell">Bell</option><option value="pop">Pop</option><option value="marimba">Marimba</option><option value="drop">Drop</option></select></div>
+      <div class="opt">Vibrate<div class="sw" data-k="vib"></div></div>
+      <div class="opt"><span class="mut" id="vibStat"></span></div>
+      <div class="opt"><button class="btn s" id="testS">Test sound</button><button class="btn s o" id="testV">Test
+
+
+        
