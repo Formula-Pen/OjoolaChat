@@ -886,40 +886,55 @@ $("recPause").onclick=function(){
   else{rec.mr.resume();rec.start=Date.now();rec.paused=false;$("recBar").classList.remove("paused");$("recState").textContent="Recording";$("recPause").textContent="⏸️"}};
 
 /* Account */
-$("logout").onclick=function(){setOnline(false);auth.signOut()};
-$("delAcc").onclick=function(){var u=auth.currentUser;if(!u||!confirm("Delete your account permanently?"))return;db.collection("users").doc(u.uid).delete().then(function(){return u.delete()}).then(function(){Object.keys(localStorage).forEach(function(k){if(k.indexOf("oj_")===0)localStorage.removeItem(k)})}).catch(function(e){$("accMsg").textContent=e.code==="auth/requires-recent-login"?"Log out, log in again, then retry.":e.message})};
+/* Account */
+$("logout").onclick=function(){if(!confirm("Log out of OjoolaChat?"))return;setOnline(false);auth.signOut()};
+$("delAcc").onclick=function(){var u=auth.currentUser;if(!u||!confirm("Delete your account permanently? This cannot be undone."))return;db.collection("users").doc(u.uid).delete().then(function(){return u.delete()}).then(function(){Object.keys(localStorage).forEach(function(k){if(k.indexOf("oj_")===0)localStorage.removeItem(k)})}).catch(function(e){$("accMsg").textContent=e.code==="auth/requires-recent-login"?"Log out, log in again, then retry.":e.message})};
 
-/* Back button v2: Home is the last page, tap twice to exit */
-if(!window.__ojBack){
-window.__ojBack=1;
-var exT=null;
-var trap=function(){clearTimeout(exT);if(!(history.state&&history.state.oj===1))history.pushState({oj:1},"")};
-var goBack=function(){
-  var v=$("viewer");if(v){v.remove();return true}
-  if(!$("rbar").classList.contains("hidden")){$("rbar").classList.add("hidden");return true}
-  if(!$("amenu").classList.contains("hidden")){$("amenu").classList.add("hidden");return true}
-  if(!$("picMenu").classList.contains("hidden")){$("picMenu").classList.add("hidden");return true}
-  if(rec.mr){stopRec(false);return true}
-  if(!$("chat").classList.contains("hidden")){$("cBack").click();return true}
-  if(!$("prof").classList.contains("hidden")){$("pBack").click();return true}
-  if(!$("addm").classList.contains("hidden")){$("amBack").click();return true}
-  if(!$("fwd").classList.contains("hidden")){$("fBack").click();return true}
-  if(!$("auth").classList.contains("hidden")){go("welcome");return true}
-  if(!$("main").classList.contains("hidden")){
-    if(!$("editBox").classList.contains("hidden")){closeEdit();return true}
-    if($("t-home").classList.contains("hidden")){tab("home");return true}}
-  return false};
+/* Back button: every action is a step, Home is the last page */
+var SC=["welcome","auth","main","prof","chat","addm","fwd"],TB=["home","chats","me","set"];
+var L=[],busy=false,armed=false,keepEdit=false,qd=0;
+function hid(i){return $(i).classList.contains("hidden")}
+function key(){
+  var s=SC.filter(function(i){return!hid(i)})[0]||"",t="",e="",o="";
+  if(s==="main"){t=TB.filter(function(i){return!hid("t-"+i)})[0]||"";e=hid("editBox")?"":"e"}
+  o=$("viewer")?"v":!hid("rbar")?"r":!hid("amenu")?"a":!hid("picMenu")?"p":"";
+  return s+"|"+t+"|"+e+"|"+o}
+function guard(){if(!(history.state&&history.state.oj===1))history.pushState({oj:1},"")}
+function restore(k){
+  var p=k.split("|");busy=true;
+  if(!p[3]){var v=$("viewer");if(v)v.remove();["rbar","amenu","picMenu"].forEach(function(i){$(i).classList.add("hidden")})}
+  if(rec.mr)stopRec(false);
+  if(p[0]!=="chat"&&p[0]!=="prof"&&p[0]!=="addm"&&p[0]!=="fwd"){setTyping(false);if(chatUnsub){chatUnsub();chatUnsub=null}}
+  go(p[0]);
+  if(p[0]==="main"){tab(p[1]||"home");if(p[2])openEdit();else closeEdit()}
+  if(p[0]==="chat"){updateInput();renderMsgs()}
+  busy=false}
+function sync(){
+  if(busy)return;
+  if(!auth.currentUser){L=[];return}
+  var k=key(),s=k.split("|")[0];
+  if(s==="welcome"||s==="auth"){L=[];return}
+  if(!L.length){L=[k];return}
+  var n=L.length;
+  if(k===L[n-1])return;
+  if(n>=2&&L[n-2]===k&&!keepEdit){L.pop();return}
+  keepEdit=false;L.push(k)}
+function exitStep(){
+  if(armed){armed=false;history.back();return}
+  toast("Tap back again to exit");armed=true;
+  setTimeout(function(){armed=false},2000);guard()}
 history.replaceState({oj:0},"");
 window.addEventListener("popstate",function(e){
   if(e.state&&e.state.oj===1)return;
-  if(goBack()){trap();return}
-  toast("Tap back again to exit");
-  clearTimeout(exT);exT=setTimeout(trap,2000)});
-document.addEventListener("pointerup",trap,true);
-document.addEventListener("click",trap,true);
-document.addEventListener("touchend",trap,true);
-toast("Back v2 ready");
-}
+  var s=key().split("|")[0];
+  if(!auth.currentUser||s==="welcome"||s==="auth"){
+    if(s==="auth"){go("welcome");guard();return}
+    exitStep();return}
+  if(L.length>1){L.pop();restore(L[L.length-1]);guard();return}
+  exitStep()});
+["pointerup","click","touchend"].forEach(function(ev){document.addEventListener(ev,guard,true)});
+$("saveP").addEventListener("click",function(){keepEdit=true;setTimeout(function(){keepEdit=false},6000)},true);
+new MutationObserver(function(){if(!qd){qd=1;setTimeout(function(){qd=0;sync()},30)}}).observe(document.body,{subtree:true,childList:true,attributes:true,attributeFilter:["class"]});
 
 mode(false);
 })();
