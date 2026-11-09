@@ -1,9 +1,13 @@
 {
+  "id": "/",
   "name": "OjoolaChat",
   "short_name": "Ojoola",
+  "description": "Chat with family and friends",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#2563eb",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
   "theme_color": "#2563eb",
   "icons": [
     { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
