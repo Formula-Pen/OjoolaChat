@@ -1351,7 +1351,6 @@ function mjTap(i){
   var o=mj.tiles[mj.sel];
   if(mjGrp(o.s)===mjGrp(t.s))mjMatch(mj.sel,i);
   else{mjSetSel(i);mjSnd("sel");tick()}}
-
 function mjMatch(a,b){
   var A=mj.tiles[a],B=mj.tiles[b],now=Date.now();
   mj.combo=now-mj.lastT<4000?mj.combo+1:1;mj.lastT=now;
