@@ -2086,8 +2086,9 @@ renderAddm=function(){
 $("amSearch").oninput=function(){renderAddm()};
 $("cAdd").onclick=function(){$("amSearch").value="";renderAddm();go("addm")};
 
-/* ===== Admin tag: small "Admin" text under the admin's name, everywhere ===== */
+/* ===== ADMIN tag everywhere: Home, Chats, Online, profiles, chat header ===== */
 (function(){
+  av=function(u,dot){return(u.photo?'<img src="'+esc(u.photo)+'" alt="">':esc(ini(u.name)))+(dot?'<span class="dot '+(isOn(u)?"":"off")+'"></span>':"")+(u.uid&&grp.admins.indexOf(u.uid)>-1?'<i class="amark"></i>':"")};
   var css=document.createElement("style");
   css.textContent=".amark{display:none}.atag{display:block;font-size:10px;font-weight:800;color:#7c3aed;line-height:1.2;margin-top:1px}.dark .atag{color:#a78bfa}.sn .atag{display:inline;margin-left:6px}.top .atag{display:inline;margin-left:6px;color:#fde68a}";
   document.head.appendChild(css);
@@ -2107,8 +2108,10 @@ $("cAdd").onclick=function(){$("amSearch").value="";renderAddm();go("addm")};
     put($("meName"),isAdmin())}
   var q=0;
   new MutationObserver(function(){if(q)return;q=1;requestAnimationFrame(function(){q=0;deco()})}).observe(document.body,{subtree:true,childList:true});
-  deco()})();
-  mode(false);
+  setInterval(deco,1500);
+  renderAll();deco()})();
+mode(false);
+  
   
 })();
 </script>
